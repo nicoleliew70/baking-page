@@ -33,18 +33,29 @@ export async function POST(request: Request) {
       try {
         const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
 
-        // In Google Calendar, an all-day event ends on the NEXT day exclusively
-        const endDateBuf = new Date(dateStr);
-        endDateBuf.setDate(endDateBuf.getDate() + 1);
-        const endDateStr = endDateBuf.toISOString().split('T')[0];
-
         const calendarId = process.env.GOOGLE_CALENDAR_ID || 'nicoleliew70@gmail.com';
+
+        // Set explicit times in Malaysia Timezone (GMT+8)
+        const slotTimes: Record<string, { start: string, end: string }> = {
+          'A': { start: '15:00:00', end: '18:00:00' },
+          'B': { start: '19:00:00', end: '22:00:00' },
+          'C': { start: '10:00:00', end: '13:00:00' },
+          'D': { start: '14:00:00', end: '17:00:00' },
+          'E': { start: '19:00:00', end: '22:00:00' },
+        };
+        const timeConfig = slotTimes[slot] || { start: '09:00:00', end: '10:00:00' };
 
         const event = {
           summary: `[REQUEST] Slot ${slot}: ${slotInfo.group} - ${name}`,
           description: `Customer Name: ${name}\nCustomer Email: ${email}\nSlot: ${slot} (${slotInfo.group} @ ${slotInfo.time})\nBooking Date: ${dateStr}`,
-          start: { date: dateStr },
-          end: { date: endDateStr },
+          start: { 
+            dateTime: `${dateStr}T${timeConfig.start}+08:00`,
+            timeZone: 'Asia/Kuala_Lumpur'
+          },
+          end: { 
+            dateTime: `${dateStr}T${timeConfig.end}+08:00`,
+            timeZone: 'Asia/Kuala_Lumpur'
+          },
         };
 
         const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`, {
