@@ -27,11 +27,24 @@ export default function CalendarSection() {
   const [bookedDates, setBookedDates] = useState<string[]>([]);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(true);
 
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     getNotified: true,
   });
+
+  const slotsData = {
+    Saturday: [
+      { id: 'A', group: 'Kids', time: '3pm - 6pm' },
+      { id: 'B', group: 'Teens', time: '7pm - 10pm' },
+    ],
+    Sunday: [
+      { id: 'C', group: 'Adults', time: '10am - 1pm' },
+      { id: 'D', group: 'Adults', time: '2pm - 5pm' },
+      { id: 'E', group: 'Adults', time: '7pm - 10pm' },
+    ]
+  };
 
   const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
@@ -68,7 +81,7 @@ export default function CalendarSection() {
 
   const handleSubmitBooking = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedDate) return;
+    if (!selectedDate || !selectedSlot) return;
 
     setIsSubmitting(true);
     try {
@@ -78,18 +91,26 @@ export default function CalendarSection() {
         body: JSON.stringify({
           ...formData,
           date: selectedDate.toISOString(),
+          slot: selectedSlot,
         }),
       });
       
       if (response.ok) {
         setSubmitted(true);
-        // Normally clear form here if you wanted to allow multiple
       }
     } catch (error) {
       console.error('Failed to submit:', error);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const getDaySlots = (date: Date | null) => {
+    if (!date) return [];
+    const day = date.getDay();
+    if (day === 6) return slotsData.Saturday;
+    if (day === 0) return slotsData.Sunday;
+    return [];
   };
 
   return (
@@ -148,22 +169,29 @@ export default function CalendarSection() {
               
               const dayStr = format(day, 'yyyy-MM-dd');
               const isBooked = bookedDates.includes(dayStr);
-              const status = isBooked ? 'booked' : 'available';
+              
+              // Only Saturday (6) and Sunday (0) are available
+              const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+              const status = (isBooked || !isWeekend) ? 'booked' : 'available';
 
               const isSelected = selectedDate && isSameDay(day, selectedDate);
               
-              const disabled = !isCurrentMonth || past || isBooked || isLoadingAvailability;
+              const disabled = !isCurrentMonth || past || isBooked || !isWeekend || isLoadingAvailability;
 
               return (
                 <button
                   key={i}
                   disabled={disabled}
-                  onClick={() => setSelectedDate(day)}
+                  onClick={() => {
+                    setSelectedDate(day);
+                    setSelectedSlot(null);
+                  }}
                   className={cn(
                     "aspect-square flex items-center justify-center rounded-xl text-sm transition-all relative overflow-hidden",
-                    !isCurrentMonth && "text-gray-300",
-                    past && "text-gray-300 cursor-not-allowed",
-                    isBooked && !past && "bg-red-50 text-red-500 line-through cursor-not-allowed",
+                    !isCurrentMonth && "opacity-30",
+                    past && "opacity-30 cursor-not-allowed",
+                    (!isWeekend || isBooked) && !past && "bg-gray-50 text-gray-400 cursor-not-allowed opacity-50",
+                    isBooked && "line-through text-red-400",
                     !disabled && !isSelected && "hover:bg-primary/10 hover:text-primary",
                     isSelected && "bg-primary text-white font-bold shadow-md shadow-primary/30"
                   )}
@@ -180,11 +208,11 @@ export default function CalendarSection() {
           <div className="flex items-center space-x-4 pt-6 mt-6 border-t border-gray-200 text-xs text-gray-500 font-medium">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-              <span>Available</span>
+              <span>Available (Sat/Sun)</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 bg-red-400 rounded-full"></span>
-              <span>Booked</span>
+              <span className="w-2 h-2 bg-gray-300 rounded-full"></span>
+              <span>Unavailable</span>
             </div>
           </div>
         </motion.div>
@@ -207,7 +235,7 @@ export default function CalendarSection() {
                 className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
               >
                 <CalendarHeart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 text-lg">Select an available date <br/>to request a booking.</p>
+                <p className="text-gray-500 text-lg">Select a Saturday or Sunday <br/>to view workshop slots.</p>
               </motion.div>
             ) : submitted ? (
               <motion.div 
@@ -219,15 +247,15 @@ export default function CalendarSection() {
                 <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-green-900 mb-2">Request Sent!</h3>
                 <p className="text-green-700 mb-6">
-                  An official calendar request has been sent to our baker for {format(selectedDate, 'PPP')}.
+                  Your request for the {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} workshop on {format(selectedDate, 'PPP')} has been sent.
                 </p>
                 
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
-                  <p className="text-sm text-gray-600 mb-3">
-                    <strong>Next Step:</strong> Please send Nicole a quick WhatsApp message to easily confirm your booking details and receive payment information!
+                  <p className="text-sm text-gray-600 mb-3 text-left">
+                    <strong>Next Step:</strong> Please send Nicole a quick WhatsApp message to confirm your slot and receive payment information!
                   </p>
                   <a 
-                    href={`https://wa.me/601133848412?text=${encodeURIComponent(`Hi Nicole! I just sent a calendar request to book a baking class on ${format(selectedDate, 'MMM do')}. My name is ${formData.name} and my email is ${formData.email}.`)}`}
+                    href={`https://wa.me/601133848412?text=${encodeURIComponent(`Hi Nicole! I just sent a booking request for Slot ${selectedSlot} (${getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} @ ${getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time}) on ${format(selectedDate, 'MMM do')}. My name is ${formData.name}.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex justify-center items-center space-x-2 bg-green-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors w-full"
@@ -241,11 +269,59 @@ export default function CalendarSection() {
                   onClick={() => {
                     setSubmitted(false);
                     setSelectedDate(null);
+                    setSelectedSlot(null);
                   }}
                   className="mt-2 text-green-600 font-semibold hover:text-green-800 transition-colors"
                 >
                   Book another session
                 </button>
+              </motion.div>
+            ) : !selectedSlot ? (
+              <motion.div 
+                key="slots"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-6"
+              >
+                <div>
+                  <button 
+                    onClick={() => setSelectedDate(null)}
+                    className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-4 hover:text-primary flex items-center"
+                  >
+                    <ChevronLeft className="w-3 h-3 mr-1" /> Back to calendar
+                  </button>
+                  <h3 className="text-3xl font-light mb-2">
+                    Available <span className="font-bold text-primary">Slots</span>
+                  </h3>
+                  <p className="text-gray-500">
+                    Workshop options for {format(selectedDate, 'EEEE, MMMM do')}
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  {getDaySlots(selectedDate).map((slot) => (
+                    <button
+                      key={slot.id}
+                      onClick={() => setSelectedSlot(slot.id)}
+                      className="w-full text-left p-6 rounded-2xl border border-gray-100 bg-cream hover:bg-white hover:border-primary hover:shadow-md transition-all group"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <span className="inline-block px-2 py-1 rounded bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-2">
+                            Slot {slot.id} • {slot.group}
+                          </span>
+                          <h4 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                            {slot.time}
+                          </h4>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                          <ChevronRight className="w-5 h-5" />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </motion.div>
             ) : (
               <motion.form 
@@ -257,11 +333,18 @@ export default function CalendarSection() {
                 className="space-y-6 bg-white"
               >
                 <div>
+                  <button 
+                    onClick={() => setSelectedSlot(null)}
+                    className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-4 hover:text-primary flex items-center"
+                  >
+                    <ChevronLeft className="w-3 h-3 mr-1" /> Change Slot
+                  </button>
                   <h3 className="text-3xl font-light mb-2">
-                    Book for <span className="font-bold text-primary">{format(selectedDate, 'MMMM do')}</span>
+                    Final <span className="font-bold text-primary">Details</span>
                   </h3>
                   <p className="text-gray-500">
-                    Fill in your details below. The master baker will be notified immediately.
+                    Workshop {selectedSlot} ({getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group}) <br/>
+                    {format(selectedDate, 'MMMM do')} @ {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time}
                   </p>
                 </div>
                 
@@ -325,3 +408,4 @@ export default function CalendarSection() {
     </section>
   );
 }
+

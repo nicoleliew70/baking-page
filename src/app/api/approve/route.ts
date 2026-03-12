@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const eventId = searchParams.get('eventId');
   const action = searchParams.get('action'); // 'approve' or 'reject'
+  const slot = searchParams.get('slot');
   const token = searchParams.get('token');
 
   const secret = process.env.GOOGLE_CALENDAR_ID?.slice(0, 10); // Simple token for verification
@@ -15,14 +16,19 @@ export async function GET(request: Request) {
     return new NextResponse('Invalid request or unauthorized', { status: 400 });
   }
 
+  const slotsData: Record<string, string> = {
+    'A': 'Kids',
+    'B': 'Teens',
+    'C': 'Adults',
+    'D': 'Adults',
+    'E': 'Adults',
+  };
+
   try {
     if (action === 'approve') {
-      // Fetch the event first to get current summary? 
-      // Actually, we can just patch it to remove [REQUEST]
-      // Since we don't easily have the current summary here without another fetch, 
-      // we'll just rename it to a clean version.
+      const group = slotsData[slot || ''] || 'Workshop';
       await updateCalendarEvent(eventId, {
-        summary: 'Baking Class (Confirmed)',
+        summary: `Slot ${slot}: ${group} (Confirmed)`,
       });
       return new NextResponse(`
         <html>
