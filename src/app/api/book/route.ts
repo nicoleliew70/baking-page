@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getCalendarAvailability } from '@/lib/googleCalendar';
 import Stripe from 'stripe';
+import { WORKSHOP_CONFIG, SlotId } from '@/lib/config';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
@@ -19,29 +20,20 @@ export async function POST(request: Request) {
     const dateStr = date.split('T')[0];
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-    // 2. 🛡️ Logic Guard 100%: Server-side capacity check
-    // Fetch live data from Google to ensure the slot isn't already full
+    // 2. 🛡️ Logic Guard: Server-side capacity check
     const checkDate = new Date(dateStr);
     const availability = await getCalendarAvailability(checkDate, checkDate);
     const dayAvailability = availability[dateStr] || {};
     const currentCount = dayAvailability[slot.toUpperCase()] || 0;
 
-    if (currentCount >= 4) {
+    if (currentCount >= WORKSHOP_CONFIG.general.maxCapacity) {
       return NextResponse.json({ 
         error: 'Sorry! This slot just filled up. Please select another time.' 
       }, { status: 409 });
     }
 
-    // 3. Workshop Config (Demo Pricing)
-    const workshopConfig: Record<string, { label: string, price: number, group: string }> = {
-      'A': { label: 'Kids Baking Fun', price: 15000, group: 'Kids' },
-      'B': { label: 'Teens Sourdough Mastery', price: 25000, group: 'Teens' },
-      'C': { label: 'Classic French Pastry (AM)', price: 32000, group: 'Adults' },
-      'D': { label: 'Sourdough Fundamentals (PM)', price: 25000, group: 'Adults' },
-      'E': { label: 'Artisan Pastry Arts (Eve)', price: 32000, group: 'Adults' },
-    };
-
-    const config = workshopConfig[slot] || { label: 'Baking Workshop', price: 15000, group: 'Adults' };
+    // 3. Centralized Workshop Config
+    const config = WORKSHOP_CONFIG.pricing[slot as SlotId] || WORKSHOP_CONFIG.pricing.A;
 
     // 4. Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
@@ -49,12 +41,12 @@ export async function POST(request: Request) {
       line_items: [
         {
           price_data: {
-            currency: 'myr',
+            currency: WORKSHOP_CONFIG.general.currency.toLowerCase(),
             product_data: {
               name: config.label,
               description: `Date: ${dateStr} | Category: ${config.group} | Slot: ${slot}`,
             },
-            unit_amount: config.price, 
+            unit_amount: config.priceInCents, 
           },
           quantity: 1,
         },

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { WORKSHOP_CONFIG, SlotId } from '@/lib/config';
 import {
   addMonths,
   eachDayOfInterval,
@@ -15,9 +16,8 @@ import {
   subMonths,
 } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, CheckCircle2, Loader2, CalendarHeart, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Loader2, CalendarHeart, ExternalLink, ChevronRight as ChevronRightIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 
 export default function CalendarSection() {
   const searchParams = useSearchParams();
@@ -33,18 +33,19 @@ export default function CalendarSection() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    confirmEmail: '',
     getNotified: true,
   });
 
   const slotsData = {
     Saturday: [
-      { id: 'A', group: 'Kids Baking Fun', time: '3pm - 6pm', price: 150 },
-      { id: 'B', group: 'Teens Sourdough Mastery', time: '7pm - 10pm', price: 250 },
+      WORKSHOP_CONFIG.pricing.A,
+      WORKSHOP_CONFIG.pricing.B,
     ],
     Sunday: [
-      { id: 'C', group: 'Classic French Pastry (AM)', time: '10am - 1pm', price: 320 },
-      { id: 'D', group: 'Sourdough Fundamentals (PM)', time: '2pm - 5pm', price: 250 },
-      { id: 'E', group: 'Artisan Pastry Arts (Eve)', time: '7pm - 10pm', price: 320 },
+      WORKSHOP_CONFIG.pricing.C,
+      WORKSHOP_CONFIG.pricing.D,
+      WORKSHOP_CONFIG.pricing.E,
     ]
   };
 
@@ -93,6 +94,11 @@ export default function CalendarSection() {
     e.preventDefault();
     if (!selectedDate || !selectedSlot) return;
 
+    if (formData.email !== formData.confirmEmail) {
+      alert("Emails do not match. Please check again.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const response = await fetch('/api/book', {
@@ -135,11 +141,11 @@ export default function CalendarSection() {
         
         {/* Calendar Column */}
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="space-y-8 p-8 md:p-12 bg-cream rounded-2xl shadow-sm border border-gray-100"
+          className="bg-cream p-8 rounded-3xl shadow-sm border border-gray-100"
         >
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-light">
@@ -240,10 +246,6 @@ export default function CalendarSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-col justify-center h-full"
-          onAnimationStart={() => {
-            // Reset selected slot if date changes to avoid price/slot mismatch
-            if (selectedSlot) setSelectedSlot(null);
-          }}
         >
           <AnimatePresence mode="wait">
             {!selectedDate ? (
@@ -275,7 +277,7 @@ export default function CalendarSection() {
                     Check your email for your booking details and receipt. We can't wait to bake with you!
                   </p>
                   <a 
-                    href="https://wa.me/601133848412"
+                    href={`https://wa.me/${WORKSHOP_CONFIG.general.whatsappNumber}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex justify-center items-center space-x-2 bg-green-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors w-full"
@@ -324,7 +326,7 @@ export default function CalendarSection() {
                 <div className="space-y-3">
                   {getDaySlots(selectedDate).map((slot) => {
                     const currentCount = slotCounts[format(selectedDate!, 'yyyy-MM-dd')]?.[slot.id] || 0;
-                    const isFull = currentCount >= 4;
+                    const isFull = currentCount >= WORKSHOP_CONFIG.general.maxCapacity;
 
                     return (
                       <button
@@ -354,14 +356,14 @@ export default function CalendarSection() {
                             </h4>
                             <p className={cn(
                               "text-xs mt-1 font-medium",
-                              currentCount >= 3 ? "text-red-500" : "text-gray-500"
+                              currentCount >= WORKSHOP_CONFIG.general.maxCapacity - 1 ? "text-red-500" : "text-gray-500"
                             )}>
-                              {isFull ? "Workshop Full" : `${4 - currentCount} seats remaining`}
+                              {isFull ? "Workshop Full" : `${WORKSHOP_CONFIG.general.maxCapacity - currentCount} seats remaining`}
                             </p>
                           </div>
                           {!isFull && (
                             <div className="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
-                              <ChevronRight className="w-5 h-5" />
+                              <ChevronRightIcon className="w-5 h-5" />
                             </div>
                           )}
                         </div>
@@ -373,11 +375,11 @@ export default function CalendarSection() {
             ) : (
               <motion.form 
                 key="form"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
                 onSubmit={handleSubmitBooking}
-                className="space-y-6 bg-white"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-6"
               >
                 <div>
                   <button 
@@ -420,6 +422,18 @@ export default function CalendarSection() {
                       placeholder="jane@example.com"
                     />
                   </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2" htmlFor="confirmEmail">Confirm Email</label>
+                    <input 
+                      required
+                      type="email" 
+                      id="confirmEmail"
+                      value={formData.confirmEmail}
+                      onChange={(e) => setFormData({...formData, confirmEmail: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                      placeholder="Repeat email address"
+                    />
+                  </div>
                   <label className="flex items-start space-x-3 cursor-pointer">
                     <input 
                       type="checkbox" 
@@ -431,6 +445,9 @@ export default function CalendarSection() {
                       Notify me of future artisan baking workshops and private events.
                     </span>
                   </label>
+                  <p className="text-[11px] text-gray-400 leading-relaxed italic border-t border-gray-100 pt-4">
+                    <strong>Note:</strong> {WORKSHOP_CONFIG.general.cancellationPolicy}
+                  </p>
                 </div>
 
                 <button 
@@ -461,4 +478,3 @@ export default function CalendarSection() {
     </section>
   );
 }
-
