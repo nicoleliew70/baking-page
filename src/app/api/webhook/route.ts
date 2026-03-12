@@ -7,6 +7,23 @@ import { WORKSHOP_CONFIG, SlotId } from '@/lib/config';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+async function sendCustomerEmail({ to, toName, subject, html }: { to: string; toName: string; subject: string; html: string }) {
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': process.env.BREVO_API_KEY || '',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: 'Nicole Baking', email: 'chefnicolelsv@gmail.com' },
+      to: [{ email: to, name: toName }],
+      subject,
+      htmlContent: html,
+    }),
+  });
+  if (!res.ok) throw new Error(`Brevo error: ${await res.text()}`);
+}
+
 export const runtime = 'edge';
 
 export async function GET() {
@@ -67,9 +84,9 @@ export async function POST(req: Request) {
           });
 
           // 2. Email Customer Apology
-          await resend.emails.send({
-            from: 'Nicole Baking <onboarding@resend.dev>',
-            to: [customer_email],
+          await sendCustomerEmail({
+            to: customer_email,
+            toName: customer_name,
             subject: '⚠️ Important: Full Refund Issued for Your Booking',
             html: `
 <!DOCTYPE html>
@@ -160,9 +177,9 @@ export async function POST(req: Request) {
         }
 
         // Send confirmation email to customer
-        await resend.emails.send({
-          from: 'Nicole Baking <onboarding@resend.dev>',
-          to: [customer_email],
+        await sendCustomerEmail({
+          to: customer_email,
+          toName: customer_name,
           subject: `✅ Booking Confirmed – ${slotInfo.label} on ${booking_date}`,
           html: `
 <!DOCTYPE html>
@@ -290,7 +307,7 @@ export async function POST(req: Request) {
 </html>`
         });
 
-        // Notify Nicole (admin)
+        // Notify Nicole (admin) via Resend
         await resend.emails.send({
           from: 'Nicole Baking <onboarding@resend.dev>',
           to: [WORKSHOP_CONFIG.general.adminEmail],
