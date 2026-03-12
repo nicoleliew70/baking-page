@@ -90,7 +90,7 @@ export default function CalendarSection() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          date: selectedDate.toISOString(),
+          date: format(selectedDate, 'yyyy-MM-dd'),
           slot: selectedSlot,
         }),
       });
