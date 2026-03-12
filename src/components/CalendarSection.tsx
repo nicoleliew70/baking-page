@@ -57,13 +57,6 @@ export default function CalendarSection() {
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
 
-  // Handle Stripe Redirection Success
-  useEffect(() => {
-    const status = searchParams.get('status');
-    if (status === 'success') {
-      setSubmitted(true);
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     async function fetchAvailability() {
@@ -266,36 +259,14 @@ export default function CalendarSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center"
               >
-                <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-green-900 mb-2">Booking Confirmed!</h3>
-                <p className="text-green-700 mb-6 font-medium">
-                  Payment successful! Your spot is officially secured and your calendar invitation has been sent.
-                </p>
-                
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
-                  <p className="text-sm text-gray-600 mb-6 text-center">
-                    Check your email for your booking details and receipt. We can't wait to bake with you!
-                  </p>
-                  <a 
-                    href={`https://wa.me/${WORKSHOP_CONFIG.general.whatsappNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex justify-center items-center space-x-2 bg-green-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors w-full"
-                  >
-                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.549 4.168 1.593 5.969L.004 24l6.177-1.62A11.966 11.966 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031C24.062 5.385 18.677 0 12.031 0zm0 22A9.976 9.976 0 014.288 18.42l-.271-.43-3.468.91 1-3.376-.473-.755A9.978 9.978 0 012.031 12C2.031 6.477 6.477 2 12.031 2s10 4.477 10 10-4.477 10-10 10zm5.669-7.143c-.312-.156-1.844-.912-2.125-1.016-.282-.104-.485-.156-.69.156-.206.312-.801 1.016-.983 1.224-.183.208-.364.234-.676.078-.312-.156-1.313-.485-2.502-1.545-.928-.826-1.554-1.846-1.737-2.158-.183-.312-.02-.482.136-.638.141-.14.312-.364.469-.546.156-.182.208-.312.312-.52.104-.208.052-.39-.026-.546-.078-.156-.69-1.664-.946-2.28-.248-.598-.501-.516-.69-.525-.182-.01-.39-.01-.598-.01a1.14 1.14 0 00-.832.39c-.282.312-1.092 1.066-1.092 2.6s1.118 3.016 1.274 3.224c.156.208 2.197 3.354 5.318 4.706.744.323 1.326.516 1.777.66.747.239 1.427.205 1.962.124.594-.09 1.844-.754 2.104-1.482.261-.728.261-1.352.183-1.482-.078-.13-.282-.208-.594-.364z"/></svg>
-                    <span>Message Nicole on WhatsApp</span>
-                  </a>
-                </div>
-
+                <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-green-900 mb-2">Session Booked!</h3>
                 <button 
                   onClick={() => {
                     setSubmitted(false);
-                    setSelectedDate(null);
                     setSelectedSlot(null);
-                    // Force clear the URL search params so the success state doesn't persist on refresh
-                    window.history.replaceState({}, '', '/');
                   }}
-                  className="mt-2 text-green-600 font-semibold hover:text-green-800 transition-colors"
+                  className="mt-2 text-green-600 text-sm font-semibold hover:text-green-800 transition-colors underline"
                 >
                   Book another session
                 </button>
