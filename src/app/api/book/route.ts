@@ -28,19 +28,17 @@ export async function POST(request: Request) {
         endDateBuf.setDate(endDateBuf.getDate() + 1);
         const endDateStr = endDateBuf.toISOString().split('T')[0];
 
+        const calendarId = process.env.GOOGLE_CALENDAR_ID || 'nicoleliew70@gmail.com';
+
         const event = {
-          summary: `Baking Class Request: ${name}`,
-          description: `Customer Name: ${name}\nCustomer Email: ${email}\nWants Marketing: ${getNotified ? 'Yes' : 'No'}\n\nTo ACCEPT this booking and block this date on the website, simply click "Yes" on this invite!`,
+          summary: `[REQUEST] Baking Class: ${name}`,
+          description: `Customer Name: ${name}\nCustomer Email: ${email}\nWants Marketing: ${getNotified ? 'Yes' : 'No'}\n\nThis booking request was placed via the website.`,
           start: { date: dateStr },
           end: { date: endDateStr },
-          attendees: [
-            { email: 'nicoleliew70@gmail.com' } // The baker receives the invite
-          ],
         };
 
         await calendar.events.insert({
-          calendarId: 'primary', // The bot's own internal calendar
-          sendUpdates: 'all',    // This is what sends the email invite to Nicole!
+          calendarId: calendarId, // Write directly into Nicole's shared calendar
           requestBody: event,
         });
 

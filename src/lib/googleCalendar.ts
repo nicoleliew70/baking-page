@@ -40,14 +40,14 @@ export async function getBookedDates(startDate: Date, endDate: Date) {
 
     const events = response.data.items || [];
     
-    // Extract simply an array of date strings (YYYY-MM-DD) that are marked as busy/booked.
+    // We only want to block dates that Nicole has 'Confirmed' (don't have [REQUEST] in title)
     const bookedDates = events.map(event => {
-      // If it's a full-day event, it has event.start.date
-      // If it's a specific time event, it has event.start.dateTime
+      const title = event.summary || '';
+      if (title.includes('[REQUEST]')) return null;
+
       const dateString = event.start?.date || event.start?.dateTime;
       if (!dateString) return null;
       
-      // We just want the 'YYYY-MM-DD' part for comparison on the frontend
       return dateString.split('T')[0];
     }).filter(Boolean) as string[];
 
