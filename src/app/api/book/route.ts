@@ -28,7 +28,19 @@ export async function POST(request: Request) {
 
         const event = {
           summary: `[REQUEST] Baking Class: ${name}`,
-          description: `Customer Name: ${name}\nCustomer Email: ${email}\nWants Marketing: ${getNotified ? 'Yes' : 'No'}\n\nThis booking request was placed via the website.`,
+          description: `
+👤 **Customer:** ${name}
+📧 **Email:** ${email}
+📢 **Marketing Opt-in:** ${getNotified ? 'Yes' : 'No'}
+
+---
+🔔 **HOW TO ACCEPT:**
+Simply edit this event title and REMOVE the "[REQUEST]" prefix. The website will then automatically mark this date as BOOKED.
+
+❌ **HOW TO REJECT:**
+Just delete this event from your calendar. The date will remain AVAILABLE on the website.
+---
+          `.trim(),
           start: { date: dateStr },
           end: { date: endDateStr },
         };
