@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import CalendarSection from '@/components/CalendarSection';
 
@@ -176,41 +176,89 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-8">
               {[
-                { title: "Sourdough Fundamentals", hours: "4 Hours", level: "Adults & Teens", price: "Contact for pricing", status: "Open", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" },
-                { title: "Classic French Pastry", hours: "3-4 Hours", level: "Adults", price: "Contact for pricing", status: "Open", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" },
-                { title: "Fun Baking Basics", hours: "2 Hours", level: "Kids & Teens", price: "Contact for pricing", status: "Open", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" },
+                { 
+                  title: "Sourdough Fundamentals", 
+                  hours: "4 Hours", 
+                  level: "Adults & Teens", 
+                  description: "Master the rhythm of the wild yeast. Learn hydration ratios, folding techniques, and the secret to a perfect ear in your sourdough loaf.",
+                  price: "RM 250", 
+                  status: "Open", 
+                  src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" 
+                },
+                { 
+                  title: "Classic French Pastry", 
+                  hours: "3.5 Hours", 
+                  level: "Adults", 
+                  description: "Delve into the art of butter and lamination. We cover pâte à choux, delicate tart shells, and the science of silky pastry creams.",
+                  price: "RM 320", 
+                  status: "Open", 
+                  src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" 
+                },
+                { 
+                  title: "Fun Baking Basics", 
+                  hours: "2 Hours", 
+                  level: "Kids & Teens", 
+                  description: "A joyful introduction to the kitchen. From measurement math to decorating cupcakes—learning through baking has never been more fun!",
+                  price: "RM 150", 
+                  status: "Open", 
+                  src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" 
+                },
               ].map((cls, idx) => (
-                <motion.div 
+                <a 
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: idx * 0.15 }}
-                  className="group cursor-pointer"
+                  href="#calendar"
+                  className="block group cursor-pointer h-full"
                 >
-                  <div className="img-hover-zoom rounded-custom mb-4 aspect-[4/5] bg-gray-100 shadow-lg">
-                    <img alt={cls.title} className="w-full h-full object-cover" src={cls.src}/>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.6, delay: idx * 0.15 }}
+                    className="bg-white p-4 rounded-custom border border-gray-100 shadow-sm hover:shadow-xl transition-all h-full flex flex-col"
+                  >
+                  <div className="img-hover-zoom rounded-custom mb-6 aspect-[4/3] bg-gray-100 overflow-hidden">
+                    <img alt={cls.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={cls.src}/>
                   </div>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-xl font-semibold mb-1 group-hover:text-primary transition-colors">{cls.title}</h3>
-                      <p className="text-sm text-gray-500 mb-3">{cls.hours} • {cls.level}</p>
-                      <p className="text-lg font-bold text-charcoal">{cls.price}</p>
+                  <div className="flex flex-col flex-grow">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="bg-primary/10 text-primary text-[10px] font-bold uppercase px-2 py-1 rounded">
+                        {cls.level}
+                      </span>
+                      {cls.status === "Open" ? (
+                        <div className="flex items-center space-x-1">
+                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                          <span className="text-green-700 text-[10px] font-bold uppercase tracking-wider">Booking Open</span>
+                        </div>
+                      ) : (
+                        <span className="bg-red-100 text-red-700 text-[10px] font-bold uppercase px-2 py-1 rounded">Sold Out</span>
+                      )}
                     </div>
-                    {cls.status === "Open" ? (
-                      <span className="bg-green-100 text-green-700 text-[10px] font-bold uppercase px-2 py-1 rounded">Open</span>
-                    ) : (
-                      <span className="bg-red-100 text-red-700 text-[10px] font-bold uppercase px-2 py-1 rounded">Sold Out</span>
-                    )}
-                  </div>
-                </motion.div>
+                    <h3 className="text-2xl font-semibold mb-2 text-charcoal">{cls.title}</h3>
+                    <p className="text-sm text-gray-500 mb-4 line-clamp-3 leading-relaxed">
+                      {cls.description}
+                    </p>
+                    <div className="mt-auto pt-6 border-t border-gray-50 flex justify-between items-center text-sm">
+                      <div className="flex flex-col">
+                        <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Duration</span>
+                        <span className="font-semibold text-charcoal">{cls.hours}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Course Fee</span>
+                        <p className="text-xl font-bold text-primary">{cls.price}</p>
+                      </div>
+                    </div>
+                    </div>
+                  </motion.div>
+                </a>
               ))}
             </div>
           </div>
         </section>
 
         {/* Functional Booking Calendar */}
-        <CalendarSection />
+        <Suspense fallback={<div className="h-96 flex items-center justify-center bg-cream rounded-2xl animate-pulse">Loading Booking System...</div>}>
+          <CalendarSection />
+        </Suspense>
 
         {/* Testimonials */}
         <section className="section-padding bg-charcoal text-white text-center">

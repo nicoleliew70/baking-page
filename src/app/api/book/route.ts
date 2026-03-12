@@ -1,154 +1,75 @@
 import { NextResponse } from 'next/server';
-import { getGoogleAuthToken } from '@/lib/googleCalendar';
-import { Resend } from 'resend';
+import { getCalendarAvailability } from '@/lib/googleCalendar';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+  apiVersion: '2025-02-11' as any,
+});
 
 export const runtime = 'edge';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { date, name, email, getNotified, slot } = body;
 
+    // 1. Validation
     if (!date || !name || !email || !slot) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const slotsData: Record<string, { group: string, time: string }> = {
-      'A': { group: 'Kids', time: '3pm - 6pm' },
-      'B': { group: 'Teens', time: '7pm - 10pm' },
-      'C': { group: 'Adults', time: '10am - 1pm' },
-      'D': { group: 'Adults', time: '2pm - 5pm' },
-      'E': { group: 'Adults', time: '7pm - 10pm' },
-    };
-
-    const slotInfo = slotsData[slot] || { group: 'Workshop', time: '' };
     const dateStr = date.split('T')[0];
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const secret = process.env.GOOGLE_CALENDAR_ID?.slice(0, 10);
 
-    // Attempt to send Google Calendar Invite if credentials exist
-    if (process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS) {
-      try {
-        const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
+    // 2. 🛡️ Logic Guard 100%: Server-side capacity check
+    // Fetch live data from Google to ensure the slot isn't already full
+    const checkDate = new Date(dateStr);
+    const availability = await getCalendarAvailability(checkDate, checkDate);
+    const dayAvailability = availability[dateStr] || {};
+    const currentCount = dayAvailability[slot.toUpperCase()] || 0;
 
-        const calendarId = process.env.GOOGLE_CALENDAR_ID || 'nicoleliew70@gmail.com';
-
-        // Set explicit times in Malaysia Timezone (GMT+8)
-        const slotTimes: Record<string, { start: string, end: string }> = {
-          'A': { start: '15:00:00', end: '18:00:00' },
-          'B': { start: '19:00:00', end: '22:00:00' },
-          'C': { start: '10:00:00', end: '13:00:00' },
-          'D': { start: '14:00:00', end: '17:00:00' },
-          'E': { start: '19:00:00', end: '22:00:00' },
-        };
-        const timeConfig = slotTimes[slot] || { start: '09:00:00', end: '10:00:00' };
-
-        const event = {
-          summary: `[REQUEST] Slot ${slot}: ${slotInfo.group} - ${name}`,
-          description: `Customer Name: ${name}\nCustomer Email: ${email}\nSlot: ${slot} (${slotInfo.group} @ ${slotInfo.time})\nBooking Date: ${dateStr}`,
-          start: { 
-            dateTime: `${dateStr}T${timeConfig.start}+08:00`,
-            timeZone: 'Asia/Kuala_Lumpur'
-          },
-          end: { 
-            dateTime: `${dateStr}T${timeConfig.end}+08:00`,
-            timeZone: 'Asia/Kuala_Lumpur'
-          },
-        };
-
-        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(event),
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          console.error('Google Calendar API Error:', JSON.stringify(data, null, 2));
-        } else {
-          const eventId = data.id;
-          
-          // Send Action Email via Resend
-          if (process.env.RESEND_API_KEY) {
-            const emailResult = await resend.emails.send({
-              from: 'Nicole Baking <onboarding@resend.dev>',
-              to: ['chefnicolelsv@gmail.com'], // Only one for sandbox testing
-              subject: `New Request: [Slot ${slot}] ${name} (${dateStr})`,
-              html: `
-                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 0; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); border: 1px solid #f0f0f0;">
-                  <!-- Header -->
-                  <div style="background-color: #fdfbf7; padding: 32px 32px 24px; text-align: center; border-bottom: 1px solid #f0eae1;">
-                    <h1 style="color: #4a3728; margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">New Booking Request</h1>
-                    <p style="color: #8a7b71; font-size: 15px; margin: 8px 0 0 0;">from <strong>${name}</strong></p>
-                  </div>
-                  
-                  <!-- Content -->
-                  <div style="padding: 32px;">
-                    <div style="background-color: #faf9f7; border: 1px solid #f0eae1; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
-                      <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                          <td style="padding: 0 0 16px 0; border-bottom: 1px solid #eee;">
-                            <p style="margin: 0; font-size: 13px; color: #8a7b71; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Slot Details</p>
-                            <p style="margin: 4px 0 0 0; font-size: 16px; color: #4a3728; font-weight: 500;">Slot ${slot} • ${slotInfo.group}</p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 16px 0; border-bottom: 1px solid #eee;">
-                            <p style="margin: 0; font-size: 13px; color: #8a7b71; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Date & Time</p>
-                            <p style="margin: 4px 0 0 0; font-size: 16px; color: #4a3728; font-weight: 500;">${dateStr} <span style="color: #bfa892;">|</span> ${slotInfo.time}</p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 16px 0 0 0;">
-                            <p style="margin: 0; font-size: 13px; color: #8a7b71; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Contact</p>
-                            <p style="margin: 4px 0 0 0; font-size: 16px; color: #4a3728; font-weight: 500;">
-                              <a href="mailto:${email}" style="color: #4a3728; text-decoration: none;">${email}</a>
-                            </p>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                    
-                    <!-- Actions -->
-                    <div style="text-align: center;">
-                      <a href="${appUrl}/api/approve?action=approve&eventId=${eventId}&slot=${slot}&token=${secret}" 
-                         style="display: block; width: 100%; box-sizing: border-box; background-color: #4a3728; color: #ffffff; padding: 16px 24px; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; margin-bottom: 12px;">
-                         Accept Booking
-                      </a>
-                      <a href="${appUrl}/api/approve?action=reject&eventId=${eventId}&token=${secret}" 
-                         style="display: block; width: 100%; box-sizing: border-box; background-color: #ffffff; color: #dc2626; padding: 16px 24px; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; border: 1px solid #fecaca;">
-                         Decline
-                      </a>
-                    </div>
-                    
-                    <p style="text-align: center; color: #9ca3af; font-size: 13px; margin: 24px 0 0 0;">
-                      Accepting will confirm this spot on the website calendar.
-                    </p>
-                  </div>
-                </div>
-              `
-            });
-            console.log('Resend Email Result:', JSON.stringify(emailResult, null, 2));
-          }
-        }
-
-        console.log('Successfully added event and triggered email check.');
-      } catch (calError: any) {
-        console.error('Error in booking flow:', calError?.message || calError);
-      }
+    if (currentCount >= 4) {
+      return NextResponse.json({ 
+        error: 'Sorry! This slot just filled up. Please select another time.' 
+      }, { status: 409 });
     }
+
+    // 3. Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'myr',
+            product_data: {
+              name: `Baking Workshop - Slot ${slot}`,
+              description: `Date: ${dateStr} | Class: ${slot === 'A' ? 'Kids' : slot === 'B' ? 'Teens' : 'Adults'}`,
+            },
+            unit_amount: 15000, // RM 150.00 (in cents)
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      customer_email: email,
+      success_url: `${appUrl}/?status=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/?status=cancelled`,
+      metadata: {
+        booking_date: dateStr,
+        customer_name: name,
+        customer_email: email,
+        slot_id: slot,
+        get_notified: getNotified ? 'true' : 'false',
+      },
+    });
 
     return NextResponse.json({ 
       success: true, 
-      dateFormatted: dateStr 
+      url: session.url 
     });
-  } catch (error) {
-    console.error('Error processing booking:', error);
-    return NextResponse.json({ error: 'Failed to submit booking' }, { status: 500 });
+
+  } catch (error: any) {
+    console.error('Stripe Session Error:', error);
+    return NextResponse.json({ error: error.message || 'Failed to create payment session' }, { status: 500 });
   }
 }

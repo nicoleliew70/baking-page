@@ -143,3 +143,24 @@ export async function deleteCalendarEvent(eventId: string) {
 
   return true;
 }
+
+export async function getCalendarEvent(eventId: string) {
+  const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId || '')}/events/${eventId}`;
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store'
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Failed to fetch event: ${JSON.stringify(error)}`);
+  }
+
+  return response.json();
+}

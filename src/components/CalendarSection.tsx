@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   addMonths,
   eachDayOfInterval,
@@ -14,11 +15,12 @@ import {
   subMonths,
 } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, CheckCircle2, Loader2, CalendarHeart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Loader2, CalendarHeart, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 
 export default function CalendarSection() {
+  const searchParams = useSearchParams();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,6 +55,14 @@ export default function CalendarSection() {
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
+
+  // Handle Stripe Redirection Success
+  useEffect(() => {
+    const status = searchParams.get('status');
+    if (status === 'success') {
+      setSubmitted(true);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchAvailability() {
@@ -95,11 +105,17 @@ export default function CalendarSection() {
         }),
       });
       
-      if (response.ok) {
-        setSubmitted(true);
+      const data = await response.json();
+      
+      if (response.ok && data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
       }
     } catch (error) {
       console.error('Failed to submit:', error);
+      alert('Connection error. Please check your internet.');
     } finally {
       setIsSubmitting(false);
     }
@@ -245,36 +261,32 @@ export default function CalendarSection() {
                 className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center"
               >
                 <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-green-900 mb-2">Request Sent!</h3>
-                <p className="text-green-700 mb-6">
-                  Your request for the {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} workshop on {format(selectedDate, 'PPP')} has been sent.
+                <h3 className="text-2xl font-bold text-green-900 mb-2">Booking Confirmed!</h3>
+                <p className="text-green-700 mb-6 font-medium">
+                  Payment successful! Your spot is officially secured and your calendar invitation has been sent.
                 </p>
                 
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
-                  <p className="text-sm text-gray-600 mb-3 text-left">
-                    <strong>Next Step:</strong> Please send Nicole a quick WhatsApp message to confirm your slot and receive payment information!
+                  <p className="text-sm text-gray-600 mb-6 text-center">
+                    Check your email for your booking details and receipt. We can't wait to bake with you!
                   </p>
                   <a 
-                    href={`https://wa.me/601133848412?text=${encodeURIComponent(`Hi Nicole! I just sent a booking request for Slot ${selectedSlot} (${getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} @ ${getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time}) on ${format(selectedDate, 'MMM do')}. My name is ${formData.name}.`)}`}
+                    href="https://wa.me/601133848412"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex justify-center items-center space-x-2 bg-green-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors w-full"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.549 4.168 1.593 5.969L.004 24l6.177-1.62A11.966 11.966 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031C24.062 5.385 18.677 0 12.031 0zm0 22A9.976 9.976 0 014.288 18.42l-.271-.43-3.468.91 1-3.376-.473-.755A9.978 9.978 0 012.031 12C2.031 6.477 6.477 2 12.031 2s10 4.477 10 10-4.477 10-10 10zm5.669-7.143c-.312-.156-1.844-.912-2.125-1.016-.282-.104-.485-.156-.69.156-.206.312-.801 1.016-.983 1.224-.183.208-.364.234-.676.078-.312-.156-1.313-.485-2.502-1.545-.928-.826-1.554-1.846-1.737-2.158-.183-.312-.02-.482.136-.638.141-.14.312-.364.469-.546.156-.182.208-.312.312-.52.104-.208.052-.39-.026-.546-.078-.156-.69-1.664-.946-2.28-.248-.598-.501-.516-.69-.525-.182-.01-.39-.01-.598-.01a1.14 1.14 0 00-.832.39c-.282.312-1.092 1.066-1.092 2.6s1.118 3.016 1.274 3.224c.156.208 2.197 3.354 5.318 4.706.744.323 1.326.516 1.777.66.747.239 1.427.205 1.962.124.594-.09 1.844-.754 2.104-1.482.261-.728.261-1.352.183-1.482-.078-.13-.282-.208-.594-.364z"/></svg>
-                    <span>Message on WhatsApp</span>
+                    <span>Message Nicole on WhatsApp</span>
                   </a>
                 </div>
 
-                <button 
-                  onClick={() => {
-                    setSubmitted(false);
-                    setSelectedDate(null);
-                    setSelectedSlot(null);
-                  }}
-                  className="mt-2 text-green-600 font-semibold hover:text-green-800 transition-colors"
+                <a 
+                  href="/"
+                  className="mt-2 text-green-600 font-semibold hover:text-green-800 transition-colors inline-block"
                 >
-                  Book another session
-                </button>
+                  Return to Home
+                </a>
               </motion.div>
             ) : !selectedSlot ? (
               <motion.div 
@@ -365,7 +377,7 @@ export default function CalendarSection() {
                     <ChevronLeft className="w-3 h-3 mr-1" /> Change Slot
                   </button>
                   <h3 className="text-3xl font-light mb-2">
-                    Final <span className="font-bold text-primary">Details</span>
+                    Ready to <span className="font-bold text-primary">Join?</span>
                   </h3>
                   <p className="text-gray-500">
                     Workshop {selectedSlot} ({getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group}) <br/>
@@ -419,12 +431,18 @@ export default function CalendarSection() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>Sending Request...</span>
+                      <span>Opening Secure Payment...</span>
                     </>
                   ) : (
-                    <span>Confirm Booking Request</span>
+                    <>
+                      <span>Proceed to Payment (RM 150)</span>
+                      <ExternalLink className="w-4 h-4 ml-1 opacity-70" />
+                    </>
                   )}
                 </button>
+                <p className="text-[10px] text-center text-gray-400 uppercase tracking-widest font-bold">
+                  Secured by Stripe
+                </p>
               </motion.form>
             )}
           </AnimatePresence>
