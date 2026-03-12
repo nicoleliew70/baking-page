@@ -60,6 +60,9 @@ export async function POST(request: Request) {
         },
       ],
       mode: 'payment',
+      invoice_creation: {
+        enabled: true,
+      },
       customer_email: email,
       success_url: `${appUrl}/?status=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/?status=cancelled`,
