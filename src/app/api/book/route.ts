@@ -34,7 +34,18 @@ export async function POST(request: Request) {
       }, { status: 409 });
     }
 
-    // 3. Create Stripe Checkout Session
+    // 3. Workshop Config (Demo Pricing)
+    const workshopConfig: Record<string, { label: string, price: number, group: string }> = {
+      'A': { label: 'Kids Baking Fun', price: 15000, group: 'Kids' },
+      'B': { label: 'Teens Sourdough Mastery', price: 25000, group: 'Teens' },
+      'C': { label: 'Classic French Pastry (AM)', price: 32000, group: 'Adults' },
+      'D': { label: 'Sourdough Fundamentals (PM)', price: 25000, group: 'Adults' },
+      'E': { label: 'Artisan Pastry Arts (Eve)', price: 32000, group: 'Adults' },
+    };
+
+    const config = workshopConfig[slot] || { label: 'Baking Workshop', price: 15000, group: 'Adults' };
+
+    // 4. Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -42,10 +53,10 @@ export async function POST(request: Request) {
           price_data: {
             currency: 'myr',
             product_data: {
-              name: `Baking Workshop - Slot ${slot}`,
-              description: `Date: ${dateStr} | Class: ${slot === 'A' ? 'Kids' : slot === 'B' ? 'Teens' : 'Adults'}`,
+              name: config.label,
+              description: `Date: ${dateStr} | Category: ${config.group} | Slot: ${slot}`,
             },
-            unit_amount: 15000, // RM 150.00 (in cents)
+            unit_amount: config.price, 
           },
           quantity: 1,
         },

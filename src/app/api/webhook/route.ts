@@ -39,15 +39,16 @@ export async function POST(req: Request) {
         const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
         const calendarId = process.env.GOOGLE_CALENDAR_ID || 'nicoleliew70@gmail.com';
 
-        const slotsData: Record<string, { group: string, time: string }> = {
-          'A': { group: 'Kids', time: '3pm - 6pm' },
-          'B': { group: 'Teens', time: '7pm - 10pm' },
-          'C': { group: 'Adults', time: '10am - 1pm' },
-          'D': { group: 'Adults', time: '2pm - 5pm' },
-          'E': { group: 'Adults', time: '7pm - 10pm' },
+        const slotsData: Record<string, { label: string, group: string, time: string }> = {
+          'A': { label: 'Kids Baking Fun', group: 'Kids', time: '3pm - 6pm' },
+          'B': { label: 'Teens Sourdough Mastery', group: 'Teens', time: '7pm - 10pm' },
+          'C': { label: 'Classic French Pastry (AM)', group: 'Adults', time: '10am - 1pm' },
+          'D': { label: 'Sourdough Fundamentals (PM)', group: 'Adults', time: '2pm - 5pm' },
+          'E': { label: 'Artisan Pastry Arts (Eve)', group: 'Adults', time: '7pm - 10pm' },
         };
 
-        const slotInfo = slotsData[slot_id] || { group: 'Workshop', time: '' };
+        const slotInfo = slotsData[slot_id] || { label: 'Baking Workshop', group: 'Adults', time: '' };
+        const amountPaid = (session.amount_total || 0) / 100;
         
         const slotTimes: Record<string, { start: string, end: string }> = {
           'A': { start: '15:00:00', end: '18:00:00' },
@@ -59,8 +60,8 @@ export async function POST(req: Request) {
         const timeConfig = slotTimes[slot_id] || { start: '09:00:00', end: '10:00:00' };
 
         const calendarEvent = {
-          summary: `Slot ${slot_id}: ${slotInfo.group} - ${customer_name} (Paid)`,
-          description: `Customer: ${customer_name}\nEmail: ${customer_email}\nPayment ID: ${session.id}\nStatus: PAID`,
+          summary: `[PAID] ${slotInfo.label} - ${customer_name}`,
+          description: `Customer: ${customer_name}\nEmail: ${customer_email}\nSlot: ${slot_id} (${slotInfo.group})\nPayment ID: ${session.id}\nStatus: PAID`,
           start: { 
             dateTime: `${booking_date}T${timeConfig.start}+08:00`,
             timeZone: 'Asia/Kuala_Lumpur'
@@ -89,10 +90,11 @@ export async function POST(req: Request) {
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
               <h1 style="color: #4a3728; text-align: center;">Welcome to the Workshop!</h1>
               <p>Hi <strong>${customer_name}</strong>,</p>
-              <p>We've received your payment and your spot for the <strong>Slot ${slot_id} (${slotInfo.group})</strong> workshop is now officially confirmed!</p>
+              <p>We've received your payment and your spot for the <strong>${slotInfo.label}</strong> workshop is now officially confirmed!</p>
               <div style="background: #fafafa; padding: 15px; border-radius: 8px; margin: 20px 0;">
                 <p style="margin: 5px 0;"><strong>Date:</strong> ${booking_date}</p>
                 <p style="margin: 5px 0;"><strong>Time:</strong> ${slotInfo.time}</p>
+                <p style="margin: 5px 0;"><strong>Amount Paid:</strong> RM ${amountPaid.toFixed(2)}</p>
               </div>
               <p>We're so excited to have you join us. If you have any questions, feel free to reach out via WhatsApp.</p>
               <p style="text-align: center; margin-top: 30px;">
@@ -106,15 +108,16 @@ export async function POST(req: Request) {
         await resend.emails.send({
           from: 'Nicole Baking <onboarding@resend.dev>',
           to: ['chefnicolelsv@gmail.com'],
-          subject: '💰 New Paid Booking!',
+          subject: `💰 RM ${amountPaid.toFixed(2)} Paid - ${customer_name}`,
           html: `
             <div style="font-family: sans-serif; padding: 20px;">
-              <h2>You just got a new booking!</h2>
+              <h2 style="color: #10b981;">New Paid Booking!</h2>
               <p><strong>Customer:</strong> ${customer_name}</p>
               <p><strong>Email:</strong> ${customer_email}</p>
-              <p><strong>Workshop:</strong> Slot ${slot_id} (${slotInfo.group}) on ${booking_date}</p>
-              <p><strong>Amount:</strong> RM 150.00</p>
-              <p>Google Calendar has been automatically updated.</p>
+              <p><strong>Workshop:</strong> ${slotInfo.label} (${slotInfo.group}) on ${booking_date}</p>
+              <p><strong>Amount Paid:</strong> RM ${amountPaid.toFixed(2)}</p>
+              <hr style="border: 1px solid #eee; margin: 20px 0;">
+              <p style="color: #666; font-size: 12px;">Google Calendar has been automatically updated with this confirmed event.</p>
             </div>
           `
         });
