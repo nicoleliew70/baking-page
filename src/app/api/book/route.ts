@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getGoogleAuthToken } from '@/lib/googleCalendar';
+import { Resend } from 'resend';
 
 export const runtime = 'edge';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +16,8 @@ export async function POST(request: Request) {
     }
 
     const dateStr = date.split('T')[0];
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const secret = process.env.GOOGLE_CALENDAR_ID?.slice(0, 10);
 
     // Attempt to send Google Calendar Invite if credentials exist
     if (process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS) {
@@ -28,19 +33,7 @@ export async function POST(request: Request) {
 
         const event = {
           summary: `[REQUEST] Baking Class: ${name}`,
-          description: `
-👤 **Customer:** ${name}
-📧 **Email:** ${email}
-📢 **Marketing Opt-in:** ${getNotified ? 'Yes' : 'No'}
-
----
-🔔 **HOW TO ACCEPT:**
-Simply edit this event title and REMOVE the "[REQUEST]" prefix. The website will then automatically mark this date as BOOKED.
-
-❌ **HOW TO REJECT:**
-Just delete this event from your calendar. The date will remain AVAILABLE on the website.
----
-          `.trim(),
+          description: `Customer Name: ${name}\nCustomer Email: ${email}\nBooking Date: ${dateStr}`,
           start: { date: dateStr },
           end: { date: endDateStr },
         };
@@ -57,23 +50,47 @@ Just delete this event from your calendar. The date will remain AVAILABLE on the
         const data = await response.json();
         if (!response.ok) {
           console.error('Google Calendar API Error:', JSON.stringify(data, null, 2));
-          return NextResponse.json({ 
-            success: false, 
-            error: 'Calendar API error', 
-            details: data 
-          }, { status: 500 });
+        } else {
+          const eventId = data.id;
+          
+          // Send Action Email via Resend
+          if (process.env.RESEND_API_KEY) {
+            await resend.emails.send({
+              from: 'Nicole Baking <onboarding@resend.dev>',
+              to: ['nicoleliew70@gmail.com', 'chefnicolelsv@gmail.com'],
+              subject: `New Workshop Request: ${name} (${dateStr})`,
+              html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+                  <h2 style="color: #4a3728;">New Booking Request</h2>
+                  <p>You have a new workshop request from <strong>${name}</strong>.</p>
+                  <div style="background: #fdfbf7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <p><strong>Date:</strong> ${dateStr}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Marketing:</strong> ${getNotified ? 'Yes' : 'No'}</p>
+                  </div>
+                  <div style="display: flex; gap: 10px;">
+                    <a href="${appUrl}/api/approve?action=approve&eventId=${eventId}&token=${secret}" 
+                       style="background: #4a3728; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                       Approve Booking
+                    </a>
+                    <a href="${appUrl}/api/approve?action=reject&eventId=${eventId}&token=${secret}" 
+                       style="background: #fff; color: #8b0000; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; border: 1px solid #8b0000;">
+                       Decline
+                    </a>
+                  </div>
+                  <p style="font-size: 12px; color: #999; margin-top: 30px;">
+                    Clicking Approve will mark the date as booked on your website. Decline will remove it.
+                  </p>
+                </div>
+              `
+            });
+          }
         }
 
-        console.log('Successfully sent calendar invite to Nicole.');
+        console.log('Successfully added event and triggered email check.');
       } catch (calError: any) {
-        console.error('Error creating calendar invite:', calError?.message || calError);
-        return NextResponse.json({ 
-          success: false, 
-          error: calError?.message || 'Unknown calendar error' 
-        }, { status: 500 });
+        console.error('Error in booking flow:', calError?.message || calError);
       }
-    } else {
-      console.log(`[Email Mock] Invite would be sent for ${dateStr} from ${name}`);
     }
 
     return NextResponse.json({ 

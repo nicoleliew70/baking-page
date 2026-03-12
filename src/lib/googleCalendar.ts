@@ -82,3 +82,47 @@ export async function getBookedDates(startDate: Date, endDate: Date) {
     return [];
   }
 }
+
+export async function updateCalendarEvent(eventId: string, updates: any) {
+  const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId || '')}/events/${eventId}`;
+
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Failed to update event: ${JSON.stringify(error)}`);
+  }
+
+  return response.json();
+}
+
+export async function deleteCalendarEvent(eventId: string) {
+  const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId || '')}/events/${eventId}`;
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok && response.status !== 204) {
+    const error = await response.json();
+    throw new Error(`Failed to delete event: ${JSON.stringify(error)}`);
+  }
+
+  return true;
+}
