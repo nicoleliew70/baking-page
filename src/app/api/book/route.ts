@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       },
       customer_email: email,
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appUrl}/#calendar`,
+      cancel_url: `${appUrl}/cancel`,
       metadata: {
         booking_date: dateStr,
         customer_name: name,

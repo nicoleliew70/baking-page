@@ -2,29 +2,14 @@
 
 export const runtime = 'edge';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { CheckCircle2, MessageSquare, ArrowLeft, Loader2 } from 'lucide-react';
+import { XCircle, CalendarDays, MessageSquare, ArrowLeft } from 'lucide-react';
 import { WORKSHOP_CONFIG } from '@/lib/config';
 
-export default function SuccessPage() {
+export default function CancelPage() {
   const router = useRouter();
-  const [countdown, setCountdown] = useState(15);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          router.push('/');
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [router]);
 
   return (
     <div className="min-h-screen bg-cream flex flex-col">
@@ -53,58 +38,48 @@ export default function SuccessPage() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
-            className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8"
+            className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-8"
           >
-            <CheckCircle2 className="w-10 h-10 text-primary" />
+            <XCircle className="w-10 h-10 text-gray-400" />
           </motion.div>
 
           {/* Heading */}
           <div className="text-center mb-10">
-            <p className="text-primary font-semibold tracking-widest uppercase text-xs mb-3">Payment Successful</p>
+            <p className="text-gray-400 font-semibold tracking-widest uppercase text-xs mb-3">Payment Cancelled</p>
             <h1 className="text-4xl md:text-5xl font-light leading-tight mb-4">
-              Your spot is <span className="font-semibold italic">secured!</span>
+              No worries — <span className="font-semibold italic">come back anytime.</span>
             </h1>
             <p className="text-gray-500 leading-relaxed">
-              We've received your payment and sent a confirmation email to your inbox. We can't wait to bake with you!
+              Your booking was not completed and you have not been charged. Your spot is still open — head back to the calendar whenever you're ready.
             </p>
-          </div>
-
-          {/* Detail card */}
-          <div className="bg-white rounded-custom border border-gray-100 shadow-sm p-6 mb-8 space-y-4">
-            <div className="flex items-start gap-3">
-              <span className="text-lg mt-0.5">📧</span>
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-0.5">Confirmation Email</p>
-                <p className="text-sm text-gray-600">Check your inbox (and spam folder) for your booking details.</p>
-              </div>
-            </div>
-            <div className="border-t border-gray-50" />
-            <div className="flex items-start gap-3">
-              <span className="text-lg mt-0.5">📋</span>
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-0.5">Cancellation Policy</p>
-                <p className="text-sm text-gray-600">{WORKSHOP_CONFIG.general.cancellationPolicy}</p>
-              </div>
-            </div>
           </div>
 
           {/* Actions */}
           <div className="space-y-3">
+            <button
+              onClick={() => router.push('/#calendar')}
+              className="flex items-center justify-center gap-3 w-full bg-charcoal text-white font-semibold py-4 rounded-custom hover:bg-black transition-all"
+            >
+              <CalendarDays className="w-5 h-5" />
+              Return to Booking Calendar
+            </button>
+
             <a
               href={`https://wa.me/${WORKSHOP_CONFIG.general.whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 w-full bg-[#25D366] text-white font-semibold py-4 rounded-custom hover:bg-[#20bd5a] transition-all shadow-md shadow-green-200"
+              className="flex items-center justify-center gap-3 w-full border border-gray-200 bg-white text-gray-700 font-semibold py-4 rounded-custom hover:border-primary hover:text-primary transition-all"
             >
               <MessageSquare className="w-5 h-5" />
-              Chat with Nicole on WhatsApp
+              Have questions? Chat on WhatsApp
             </a>
+
             <button
               onClick={() => router.push('/')}
               className="flex items-center justify-center gap-2 w-full text-gray-400 font-medium py-3 hover:text-primary transition-colors text-sm"
             >
-              <Loader2 className="w-3 h-3 animate-spin" />
-              <span>Redirecting to home in {countdown}s</span>
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
             </button>
           </div>
         </motion.div>
@@ -120,4 +95,3 @@ export default function SuccessPage() {
     </div>
   );
 }
-

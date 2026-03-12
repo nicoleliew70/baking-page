@@ -153,7 +153,7 @@ export async function POST(req: Request) {
         const timeConfig = slotTimes[slotId] || { start: '09:00:00', end: '10:00:00' };
 
         const calendarEvent = {
-          summary: `[PAID] ${slotInfo.label} - ${customer_name}`,
+          summary: `[PAID] Slot ${slotId}: ${slotInfo.label} - ${customer_name}`,
           description: `Customer: ${customer_name}\nEmail: ${customer_email}\nSlot: ${slot_id} (${slotInfo.group})\nPayment ID: ${session.id}\nStatus: PAID`,
           start: { 
             dateTime: `${booking_date}T${timeConfig.start}+08:00`,
