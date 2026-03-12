@@ -31,9 +31,13 @@ export async function POST(request: Request) {
           description: `Customer Name: ${name}\nCustomer Email: ${email}\nWants Marketing: ${getNotified ? 'Yes' : 'No'}\n\nThis booking request was placed via the website.`,
           start: { date: dateStr },
           end: { date: endDateStr },
+          attendees: [
+            { email: 'nicoleliew70@gmail.com' },
+            { email: 'chefnicolelsv@gmail.com' }
+          ],
         };
 
-        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`, {
+        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?sendUpdates=all`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
