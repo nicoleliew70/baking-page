@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getBookedDates } from '@/lib/googleCalendar';
 import { startOfMonth, endOfMonth, subMonths, addMonths } from 'date-fns';
 
+export const runtime = 'edge';
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
