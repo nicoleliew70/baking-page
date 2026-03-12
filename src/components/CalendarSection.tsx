@@ -38,13 +38,13 @@ export default function CalendarSection() {
 
   const slotsData = {
     Saturday: [
-      { id: 'A', group: 'Kids', time: '3pm - 6pm' },
-      { id: 'B', group: 'Teens', time: '7pm - 10pm' },
+      { id: 'A', group: 'Kids Baking Fun', time: '3pm - 6pm', price: 150 },
+      { id: 'B', group: 'Teens Sourdough Mastery', time: '7pm - 10pm', price: 250 },
     ],
     Sunday: [
-      { id: 'C', group: 'Adults', time: '10am - 1pm' },
-      { id: 'D', group: 'Adults', time: '2pm - 5pm' },
-      { id: 'E', group: 'Adults', time: '7pm - 10pm' },
+      { id: 'C', group: 'Classic French Pastry (AM)', time: '10am - 1pm', price: 320 },
+      { id: 'D', group: 'Sourdough Fundamentals (PM)', time: '2pm - 5pm', price: 250 },
+      { id: 'E', group: 'Artisan Pastry Arts (Eve)', time: '7pm - 10pm', price: 320 },
     ]
   };
 
@@ -240,6 +240,10 @@ export default function CalendarSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-col justify-center h-full"
+          onAnimationStart={() => {
+            // Reset selected slot if date changes to avoid price/slot mismatch
+            if (selectedSlot) setSelectedSlot(null);
+          }}
         >
           <AnimatePresence mode="wait">
             {!selectedDate ? (
@@ -281,12 +285,18 @@ export default function CalendarSection() {
                   </a>
                 </div>
 
-                <a 
-                  href="/"
-                  className="mt-2 text-green-600 font-semibold hover:text-green-800 transition-colors inline-block"
+                <button 
+                  onClick={() => {
+                    setSubmitted(false);
+                    setSelectedDate(null);
+                    setSelectedSlot(null);
+                    // Force clear the URL search params so the success state doesn't persist on refresh
+                    window.history.replaceState({}, '', '/');
+                  }}
+                  className="mt-2 text-green-600 font-semibold hover:text-green-800 transition-colors"
                 >
-                  Return to Home
-                </a>
+                  Book another session
+                </button>
               </motion.div>
             ) : !selectedSlot ? (
               <motion.div 
@@ -334,7 +344,7 @@ export default function CalendarSection() {
                               "inline-block px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mb-2",
                               isFull ? "bg-gray-200 text-gray-500" : "bg-primary/10 text-primary"
                             )}>
-                              Slot {slot.id} • {slot.group}
+                              {slot.group} • RM {slot.price}
                             </span>
                             <h4 className={cn(
                               "text-xl font-bold transition-colors",
@@ -380,8 +390,8 @@ export default function CalendarSection() {
                     Ready to <span className="font-bold text-primary">Join?</span>
                   </h3>
                   <p className="text-gray-500">
-                    Workshop {selectedSlot} ({getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group}) <br/>
-                    {format(selectedDate, 'MMMM do')} @ {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time}
+                    <strong className="text-charcoal">{getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} Workshop:</strong> {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time} <br/>
+                    {format(selectedDate, 'MMMM do')} • <span className="text-primary font-bold">RM {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.price}</span>
                   </p>
                 </div>
                 
@@ -435,7 +445,7 @@ export default function CalendarSection() {
                     </>
                   ) : (
                     <>
-                      <span>Proceed to Payment (RM 150)</span>
+                      <span>Proceed to Payment (RM {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.price})</span>
                       <ExternalLink className="w-4 h-4 ml-1 opacity-70" />
                     </>
                   )}

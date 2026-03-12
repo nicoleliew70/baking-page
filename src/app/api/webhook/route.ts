@@ -3,9 +3,7 @@ import Stripe from 'stripe';
 import { getGoogleAuthToken } from '@/lib/googleCalendar';
 import { Resend } from 'resend';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-02-11' as any,
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
