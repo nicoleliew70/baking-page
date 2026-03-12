@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { google } from 'googleapis';
+import { getGoogleAuthToken } from '@/lib/googleCalendar';
 
 export const runtime = 'edge';
 
@@ -17,14 +17,8 @@ export async function POST(request: Request) {
     // Attempt to send Google Calendar Invite if credentials exist
     if (process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS) {
       try {
-        const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
-        const auth = new google.auth.GoogleAuth({
-          credentials,
-          scopes: ['https://www.googleapis.com/auth/calendar.events'],
-        });
+        const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.events');
 
-        const calendar = google.calendar({ version: 'v3', auth });
-        
         // In Google Calendar, an all-day event ends on the NEXT day exclusively
         const endDateBuf = new Date(dateStr);
         endDateBuf.setDate(endDateBuf.getDate() + 1);
@@ -39,10 +33,19 @@ export async function POST(request: Request) {
           end: { date: endDateStr },
         };
 
-        await calendar.events.insert({
-          calendarId: calendarId, // Write directly into Nicole's shared calendar
-          requestBody: event,
+        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(event),
         });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(`Calendar API error: ${JSON.stringify(data)}`);
+        }
 
         console.log('Successfully sent calendar invite to Nicole.');
       } catch (calError) {

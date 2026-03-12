@@ -1,47 +1,71 @@
-import { google } from 'googleapis';
+import { SignJWT, importPKCS8 } from 'jose';
 import { startOfDay, endOfDay } from 'date-fns';
 
-// We initialize the Google Calendar API client using a Service Account.
-// A Service Account is an invisible bot user. It doesn't have access to the baker's personal emails,
-// photos, or drive files. The baker ONLY shares a specific calendar with this bot's email address.
-export async function getCalendarClient() {
+export async function getGoogleAuthToken(scope: string) {
   const credentialsJson = process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS;
-  
   if (!credentialsJson) {
     throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_CREDENTIALS environment variable.');
   }
 
   const credentials = JSON.parse(credentialsJson);
+  const alg = 'RS256';
+  const privateKey = await importPKCS8(credentials.private_key, alg);
 
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/calendar.readonly'], // READ-ONLY: the bot cannot delete or edit events!
+  const jwt = await new SignJWT({
+    iss: credentials.client_email,
+    scope: scope,
+    aud: 'https://oauth2.googleapis.com/token',
+  })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setExpirationTime('1h')
+    .sign(privateKey);
+
+  const response = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }),
   });
 
-  return google.calendar({ version: 'v3', auth });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(`Failed to fetch Google auth token: ${JSON.stringify(data)}`);
+  }
+
+  return data.access_token;
 }
 
 export async function getBookedDates(startDate: Date, endDate: Date) {
   try {
-    const calendar = await getCalendarClient();
+    const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.readonly');
     const calendarId = process.env.GOOGLE_CALENDAR_ID;
 
     if (!calendarId) {
       throw new Error('Missing GOOGLE_CALENDAR_ID environment variable.');
     }
 
-    const response = await calendar.events.list({
-      calendarId,
-      timeMin: startOfDay(startDate).toISOString(),
-      timeMax: endOfDay(endDate).toISOString(),
-      singleEvents: true,
-      orderBy: 'startTime',
+    const timeMin = encodeURIComponent(startOfDay(startDate).toISOString());
+    const timeMax = encodeURIComponent(endOfDay(endDate).toISOString());
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true&orderBy=startTime`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-    const events = response.data.items || [];
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Calendar API error: ${JSON.stringify(data)}`);
+    }
+
+    const events = data.items || [];
     
     // We only want to block dates that Nicole has 'Confirmed' (don't have [REQUEST] in title)
-    const bookedDates = events.map(event => {
+    const bookedDates = events.map((event: any) => {
       const title = event.summary || '';
       if (title.includes('[REQUEST]')) return null;
 
