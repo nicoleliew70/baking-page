@@ -10,7 +10,17 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export const runtime = 'edge';
 
 export async function GET() {
-  return new Response('Webhook endpoint is active. Use POST for Stripe events.', { status: 200 });
+  const status = {
+    webhook_secret_exists: !!process.env.STRIPE_WEBHOOK_SECRET,
+    stripe_key_exists: !!process.env.STRIPE_SECRET_KEY,
+    resend_key_exists: !!process.env.RESEND_API_KEY,
+    google_calendar_exists: !!process.env.GOOGLE_CALENDAR_ID,
+    google_creds_exists: !!process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS,
+  };
+  return NextResponse.json({ 
+    message: 'Webhook endpoint is active.',
+    environment_check: status 
+  });
 }
 
 export async function POST(req: Request) {
