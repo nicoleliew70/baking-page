@@ -55,6 +55,7 @@ export async function getCalendarAvailability(startDate: Date, endDate: Date) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      cache: 'no-store',
     });
 
     const data = await response.json();
