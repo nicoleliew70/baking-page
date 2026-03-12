@@ -24,7 +24,7 @@ export default function CalendarSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
-  const [bookedDates, setBookedDates] = useState<string[]>([]);
+  const [slotCounts, setSlotCounts] = useState<Record<string, Record<string, number>>>({});
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(true);
 
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export default function CalendarSection() {
         const response = await fetch(`/api/calendar?date=${currentDate.toISOString()}`);
         if (response.ok) {
           const data = await response.json();
-          setBookedDates(data.bookedDates || []);
+          setSlotCounts(data.slotCounts || {});
         }
       } catch (error) {
         console.error('Failed to fetch availability', error);
@@ -168,15 +168,15 @@ export default function CalendarSection() {
               const past = isBefore(day, today);
               
               const dayStr = format(day, 'yyyy-MM-dd');
-              const isBooked = bookedDates.includes(dayStr);
+              const daySlots = getDaySlots(day);
+              const isWeekend = daySlots.length > 0;
               
-              // Only Saturday (6) and Sunday (0) are available
-              const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-              const status = (isBooked || !isWeekend) ? 'booked' : 'available';
+              // A day is 'fully booked' only if all its slots have 4 or more bookings
+              const daySlotCounts = slotCounts[dayStr] || {};
+              const isFullyBooked = isWeekend && daySlots.every(slot => (daySlotCounts[slot.id] || 0) >= 4);
 
               const isSelected = selectedDate && isSameDay(day, selectedDate);
-              
-              const disabled = !isCurrentMonth || past || isBooked || !isWeekend || isLoadingAvailability;
+              const disabled = !isCurrentMonth || past || isFullyBooked || !isWeekend || isLoadingAvailability;
 
               return (
                 <button
@@ -190,14 +190,14 @@ export default function CalendarSection() {
                     "aspect-square flex items-center justify-center rounded-xl text-sm transition-all relative overflow-hidden",
                     !isCurrentMonth && "opacity-30",
                     past && "opacity-30 cursor-not-allowed",
-                    (!isWeekend || isBooked) && !past && "bg-gray-50 text-gray-400 cursor-not-allowed opacity-50",
-                    isBooked && "line-through text-red-400",
+                    (!isWeekend || isFullyBooked) && !past && "bg-gray-50 text-gray-400 cursor-not-allowed opacity-50",
+                    isFullyBooked && "line-through text-red-400",
                     !disabled && !isSelected && "hover:bg-primary/10 hover:text-primary",
                     isSelected && "bg-primary text-white font-bold shadow-md shadow-primary/30"
                   )}
                 >
                   <span>{format(day, 'd')}</span>
-                  {status === 'available' && !disabled && !isSelected && (
+                  {!disabled && !isSelected && isWeekend && (
                     <span className="absolute bottom-1.5 w-1 h-1 bg-green-400 rounded-full" />
                   )}
                 </button>
@@ -212,7 +212,7 @@ export default function CalendarSection() {
             </div>
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-gray-300 rounded-full"></span>
-              <span>Unavailable</span>
+              <span>Full or Unavailable</span>
             </div>
           </div>
         </motion.div>
@@ -300,27 +300,52 @@ export default function CalendarSection() {
                 </div>
 
                 <div className="space-y-3">
-                  {getDaySlots(selectedDate).map((slot) => (
-                    <button
-                      key={slot.id}
-                      onClick={() => setSelectedSlot(slot.id)}
-                      className="w-full text-left p-6 rounded-2xl border border-gray-100 bg-cream hover:bg-white hover:border-primary hover:shadow-md transition-all group"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <span className="inline-block px-2 py-1 rounded bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-2">
-                            Slot {slot.id} • {slot.group}
-                          </span>
-                          <h4 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
-                            {slot.time}
-                          </h4>
+                  {getDaySlots(selectedDate).map((slot) => {
+                    const currentCount = slotCounts[format(selectedDate!, 'yyyy-MM-dd')]?.[slot.id] || 0;
+                    const isFull = currentCount >= 4;
+
+                    return (
+                      <button
+                        key={slot.id}
+                        disabled={isFull}
+                        onClick={() => setSelectedSlot(slot.id)}
+                        className={cn(
+                          "w-full text-left p-6 rounded-2xl border transition-all group relative overflow-hidden",
+                          isFull 
+                            ? "bg-gray-50 border-gray-200 cursor-not-allowed opacity-60" 
+                            : "bg-cream border-gray-100 hover:bg-white hover:border-primary hover:shadow-md"
+                        )}
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className={cn(
+                              "inline-block px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mb-2",
+                              isFull ? "bg-gray-200 text-gray-500" : "bg-primary/10 text-primary"
+                            )}>
+                              Slot {slot.id} • {slot.group}
+                            </span>
+                            <h4 className={cn(
+                              "text-xl font-bold transition-colors",
+                              isFull ? "text-gray-400" : "text-gray-900 group-hover:text-primary"
+                            )}>
+                              {slot.time}
+                            </h4>
+                            <p className={cn(
+                              "text-xs mt-1 font-medium",
+                              currentCount >= 3 ? "text-red-500" : "text-gray-500"
+                            )}>
+                              {isFull ? "Workshop Full" : `${4 - currentCount} seats remaining`}
+                            </p>
+                          </div>
+                          {!isFull && (
+                            <div className="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                              <ChevronRight className="w-5 h-5" />
+                            </div>
+                          )}
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
-                          <ChevronRight className="w-5 h-5" />
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
               </motion.div>
             ) : (

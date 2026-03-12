@@ -64,33 +64,65 @@ export async function POST(request: Request) {
           
           // Send Action Email via Resend
           if (process.env.RESEND_API_KEY) {
-            await resend.emails.send({
+            const emailResult = await resend.emails.send({
               from: 'Nicole Baking <onboarding@resend.dev>',
-              to: ['nicoleliew70@gmail.com', 'chefnicolelsv@gmail.com'],
+              to: ['chefnicolelsv@gmail.com'], // Only one for sandbox testing
               subject: `New Request: [Slot ${slot}] ${name} (${dateStr})`,
               html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-                  <h2 style="color: #4a3728;">New Workshop Booking</h2>
-                  <p>You have a new request from <strong>${name}</strong>.</p>
-                  <div style="background: #fdfbf7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <p><strong>Slot:</strong> Slot ${slot} (${slotInfo.group})</p>
-                    <p><strong>Time:</strong> ${slotInfo.time}</p>
-                    <p><strong>Date:</strong> ${dateStr}</p>
-                    <p><strong>Email:</strong> ${email}</p>
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 0; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); border: 1px solid #f0f0f0;">
+                  <!-- Header -->
+                  <div style="background-color: #fdfbf7; padding: 32px 32px 24px; text-align: center; border-bottom: 1px solid #f0eae1;">
+                    <h1 style="color: #4a3728; margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">New Booking Request</h1>
+                    <p style="color: #8a7b71; font-size: 15px; margin: 8px 0 0 0;">from <strong>${name}</strong></p>
                   </div>
-                  <div style="display: flex; gap: 10px;">
-                    <a href="${appUrl}/api/approve?action=approve&eventId=${eventId}&slot=${slot}&token=${secret}" 
-                       style="background: #4a3728; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
-                       Approve Slot ${slot}
-                    </a>
-                    <a href="${appUrl}/api/approve?action=reject&eventId=${eventId}&token=${secret}" 
-                       style="background: #fff; color: #8b0000; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; border: 1px solid #8b0000;">
-                       Decline
-                    </a>
+                  
+                  <!-- Content -->
+                  <div style="padding: 32px;">
+                    <div style="background-color: #faf9f7; border: 1px solid #f0eae1; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+                      <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                          <td style="padding: 0 0 16px 0; border-bottom: 1px solid #eee;">
+                            <p style="margin: 0; font-size: 13px; color: #8a7b71; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Slot Details</p>
+                            <p style="margin: 4px 0 0 0; font-size: 16px; color: #4a3728; font-weight: 500;">Slot ${slot} • ${slotInfo.group}</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="padding: 16px 0; border-bottom: 1px solid #eee;">
+                            <p style="margin: 0; font-size: 13px; color: #8a7b71; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Date & Time</p>
+                            <p style="margin: 4px 0 0 0; font-size: 16px; color: #4a3728; font-weight: 500;">${dateStr} <span style="color: #bfa892;">|</span> ${slotInfo.time}</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="padding: 16px 0 0 0;">
+                            <p style="margin: 0; font-size: 13px; color: #8a7b71; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Contact</p>
+                            <p style="margin: 4px 0 0 0; font-size: 16px; color: #4a3728; font-weight: 500;">
+                              <a href="mailto:${email}" style="color: #4a3728; text-decoration: none;">${email}</a>
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div style="text-align: center;">
+                      <a href="${appUrl}/api/approve?action=approve&eventId=${eventId}&slot=${slot}&token=${secret}" 
+                         style="display: block; width: 100%; box-sizing: border-box; background-color: #4a3728; color: #ffffff; padding: 16px 24px; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; margin-bottom: 12px;">
+                         Accept Booking
+                      </a>
+                      <a href="${appUrl}/api/approve?action=reject&eventId=${eventId}&token=${secret}" 
+                         style="display: block; width: 100%; box-sizing: border-box; background-color: #ffffff; color: #dc2626; padding: 16px 24px; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; border: 1px solid #fecaca;">
+                         Decline
+                      </a>
+                    </div>
+                    
+                    <p style="text-align: center; color: #9ca3af; font-size: 13px; margin: 24px 0 0 0;">
+                      Accepting will confirm this spot on the website calendar.
+                    </p>
                   </div>
                 </div>
               `
             });
+            console.log('Resend Email Result:', JSON.stringify(emailResult, null, 2));
           }
         }
 

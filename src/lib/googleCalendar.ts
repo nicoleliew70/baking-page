@@ -38,7 +38,7 @@ export async function getGoogleAuthToken(scope: string) {
   return data.access_token;
 }
 
-export async function getBookedDates(startDate: Date, endDate: Date) {
+export async function getCalendarAvailability(startDate: Date, endDate: Date) {
   try {
     const token = await getGoogleAuthToken('https://www.googleapis.com/auth/calendar.readonly');
     const calendarId = process.env.GOOGLE_CALENDAR_ID;
@@ -64,22 +64,38 @@ export async function getBookedDates(startDate: Date, endDate: Date) {
 
     const events = data.items || [];
     
-    // We only want to block dates that Nicole has 'Confirmed' (don't have [REQUEST] in title)
-    const bookedDates = events.map((event: any) => {
+    // Map of date -> { slotId: count }
+    const slotCounts: Record<string, Record<string, number>> = {};
+
+    events.forEach((event: any) => {
       const title = event.summary || '';
-      if (title.includes('[REQUEST]')) return null;
+      
+      // We count both Confirmed AND pending requests for real-time slot tracking
+      // to prevent overbooking while Nicole is reviewing.
+      // If you ONLY want to count confirmed, uncomment the next line:
+      // if (title.includes('[REQUEST]')) return; 
 
       const dateString = event.start?.date || event.start?.dateTime;
-      if (!dateString) return null;
+      if (!dateString) return;
       
-      return dateString.split('T')[0];
-    }).filter(Boolean) as string[];
+      const dayStr = dateString.split('T')[0];
+      
+      // Extract Slot ID from title (e.g. "Slot A:", "Slot B:")
+      const slotMatch = title.match(/Slot ([A-E]):/i);
+      if (!slotMatch) return;
+      
+      const slotId = slotMatch[1].toUpperCase();
 
-    return bookedDates;
+      if (!slotCounts[dayStr]) slotCounts[dayStr] = {};
+      if (!slotCounts[dayStr][slotId]) slotCounts[dayStr][slotId] = 0;
+      
+      slotCounts[dayStr][slotId]++;
+    });
+
+    return slotCounts;
   } catch (error) {
-    console.error('Error fetching calendar events:', error);
-    // If there's an error (e.g. invalid creds during dev), fail gracefully and return empty array.
-    return [];
+    console.error('Error fetching calendar availability:', error);
+    return {};
   }
 }
 

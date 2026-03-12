@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getBookedDates } from '@/lib/googleCalendar';
+import { getCalendarAvailability } from '@/lib/googleCalendar';
 import { startOfMonth, endOfMonth, subMonths, addMonths } from 'date-fns';
 
 export const runtime = 'edge';
@@ -17,9 +17,9 @@ export async function GET(request: Request) {
     const startRange = subMonths(startOfMonth(baseDate), 1);
     const endRange = addMonths(endOfMonth(baseDate), 1);
 
-    const bookedDates = await getBookedDates(startRange, endRange);
+    const slotCounts = await getCalendarAvailability(startRange, endRange);
 
-    return NextResponse.json({ bookedDates });
+    return NextResponse.json({ slotCounts });
   } catch (error) {
     console.error('Failed to fetch calendar:', error);
     return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });
