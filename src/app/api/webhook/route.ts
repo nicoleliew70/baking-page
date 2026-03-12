@@ -9,6 +9,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const runtime = 'edge';
 
+export async function GET() {
+  return new Response('Webhook endpoint is active. Use POST for Stripe events.', { status: 200 });
+}
+
 export async function POST(req: Request) {
   const body = await req.text();
   const signature = req.headers.get('stripe-signature') || '';
