@@ -31,13 +31,9 @@ export async function POST(request: Request) {
           description: `Customer Name: ${name}\nCustomer Email: ${email}\nWants Marketing: ${getNotified ? 'Yes' : 'No'}\n\nThis booking request was placed via the website.`,
           start: { date: dateStr },
           end: { date: endDateStr },
-          attendees: [
-            { email: 'nicoleliew70@gmail.com' },
-            { email: 'chefnicolelsv@gmail.com' }
-          ],
         };
 
-        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?sendUpdates=all`, {
+        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -48,12 +44,21 @@ export async function POST(request: Request) {
 
         const data = await response.json();
         if (!response.ok) {
-          throw new Error(`Calendar API error: ${JSON.stringify(data)}`);
+          console.error('Google Calendar API Error:', JSON.stringify(data, null, 2));
+          return NextResponse.json({ 
+            success: false, 
+            error: 'Calendar API error', 
+            details: data 
+          }, { status: 500 });
         }
 
         console.log('Successfully sent calendar invite to Nicole.');
-      } catch (calError) {
-        console.error('Error creating calendar invite:', calError);
+      } catch (calError: any) {
+        console.error('Error creating calendar invite:', calError?.message || calError);
+        return NextResponse.json({ 
+          success: false, 
+          error: calError?.message || 'Unknown calendar error' 
+        }, { status: 500 });
       }
     } else {
       console.log(`[Email Mock] Invite would be sent for ${dateStr} from ${name}`);
