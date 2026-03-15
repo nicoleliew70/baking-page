@@ -177,28 +177,28 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { 
-                  title: "Sourdough Fundamentals", 
-                  hours: "4 Hours", 
-                  level: "Adults & Teens", 
-                  description: "Master the rhythm of the wild yeast. Learn hydration ratios, folding techniques, and the secret to a perfect ear in your sourdough loaf.",
-                  price: "RM 250", 
+                  title: "Adults Cheesecake Duo", 
+                  hours: "3 Hours", 
+                  level: "Adults (18+)", 
+                  description: "Master the delicate Japanese cotton cheesecake and a rich, creamy no-bake cheesecake in one intensive session.",
+                  price: "RM 200", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" 
                 },
                 { 
-                  title: "Classic French Pastry", 
-                  hours: "3.5 Hours", 
-                  level: "Adults", 
-                  description: "Delve into the art of butter and lamination. We cover pâte à choux, delicate tart shells, and the science of silky pastry creams.",
-                  price: "RM 320", 
+                  title: "Teens Brownie & Ice Cream", 
+                  hours: "3 Hours", 
+                  level: "Teens (13-17)", 
+                  description: "A fun session for teenagers to learn how to bake the perfect fudgy brownie and churn their own vanilla ice cream.",
+                  price: "RM 180", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" 
                 },
                 { 
-                  title: "Fun Baking Basics", 
-                  hours: "2 Hours", 
-                  level: "Kids & Teens", 
-                  description: "A joyful introduction to the kitchen. From measurement math to decorating cupcakes—learning through baking has never been more fun!",
+                  title: "Kids Cupcake Class", 
+                  hours: "3 Hours", 
+                  level: "Kids (9-12)", 
+                  description: "A joyful introduction to the kitchen where kids learn cupcake baking, colourful icing, and fun decoration techniques.",
                   price: "RM 150", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" 

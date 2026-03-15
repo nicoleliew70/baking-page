@@ -2,53 +2,33 @@ export const WORKSHOP_CONFIG = {
   pricing: {
     A: { 
       id: 'A',
-      label: 'Kids Baking Fun', 
-      group: 'Kids', 
+      label: 'Kids Cupcake Class (9-12)', 
+      group: 'Kids (9-12)', 
       price: 150, 
       priceInCents: 15000,
       time: '3pm - 6pm',
       duration: '3 Hours',
-      description: 'A joyful introduction to the kitchen for the little ones.'
+      description: 'Learn cupcake baking, icing & deco.'
     },
     B: { 
       id: 'B',
-      label: 'Teens Sourdough Mastery', 
-      group: 'Teens', 
-      price: 250, 
-      priceInCents: 25000,
+      label: 'Teens Brownie & Ice Cream (13-17)', 
+      group: 'Teens (13-17)', 
+      price: 180, 
+      priceInCents: 18000,
       time: '7pm - 10pm',
       duration: '3 Hours',
-      description: 'Master the rhythm of wild yeast and artisanal crusts.'
+      description: 'Bake delicious brownies and make your own vanilla ice cream.'
     },
     C: { 
       id: 'C',
-      label: 'Classic French Pastry (AM)', 
-      group: 'Adults', 
-      price: 320, 
-      priceInCents: 32000,
+      label: 'Adults Cheesecake Duo (18+)', 
+      group: 'Adults (18+)', 
+      price: 200, 
+      priceInCents: 20000,
       time: '10am - 1pm',
       duration: '3 Hours',
-      description: 'Delve into the art of butter, lamination, and silky creams.'
-    },
-    D: { 
-      id: 'D',
-      label: 'Sourdough Fundamentals (PM)', 
-      group: 'Adults', 
-      price: 250, 
-      priceInCents: 25000,
-      time: '2pm - 5pm',
-      duration: '3 Hours',
-      description: 'Learn hydration ratios and the secret to a perfect ear.'
-    },
-    E: { 
-      id: 'E',
-      label: 'Artisan Pastry Arts (Eve)', 
-      group: 'Adults', 
-      price: 320, 
-      priceInCents: 32000,
-      time: '7pm - 10pm',
-      duration: '3 Hours',
-      description: 'Advanced techniques for the modern home baker.'
+      description: 'Master cotton cheesecake & no-bake cheesecake.'
     },
   },
   general: {
