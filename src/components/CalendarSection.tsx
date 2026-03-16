@@ -44,6 +44,8 @@ export default function CalendarSection() {
     ],
     Sunday: [
       WORKSHOP_CONFIG.pricing.C,
+      WORKSHOP_CONFIG.pricing.D,
+      WORKSHOP_CONFIG.pricing.E,
     ]
   };
 

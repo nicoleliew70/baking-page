@@ -178,10 +178,10 @@ export default function Home() {
               {[
                 { 
                   title: "Adults Cheesecake Duo", 
-                  hours: "3 Hours", 
+                  hours: "3 Sessions on Sun", 
                   level: "Adults (18+)", 
-                  description: "Master the delicate Japanese cotton cheesecake and a rich, creamy no-bake cheesecake in one intensive session.",
-                  price: "RM 200", 
+                  description: "A cozy small-group baking workshop where you learn to master cotton & no-bake cheesecake, bake, and enjoy a relaxing experience.",
+                  price: "RM 250", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" 
                 },
@@ -189,8 +189,8 @@ export default function Home() {
                   title: "Teens Brownie & Ice Cream", 
                   hours: "3 Hours", 
                   level: "Teens (13-17)", 
-                  description: "A fun session for teenagers to learn how to bake the perfect fudgy brownie and churn their own vanilla ice cream.",
-                  price: "RM 180", 
+                  description: "A hands-on baking experience designed for teens who love desserts and creativity. Bake delicious brownies and make your own vanilla ice cream.",
+                  price: "RM 200", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" 
                 },
@@ -198,7 +198,7 @@ export default function Home() {
                   title: "Kids Cupcake Class", 
                   hours: "3 Hours", 
                   level: "Kids (9-12)", 
-                  description: "A joyful introduction to the kitchen where kids learn cupcake baking, colourful icing, and fun decoration techniques.",
+                  description: "Perfect for young bakers who want to learn, create, and have fun in the kitchen. Learn cupcake baking, icing, and fun decoration techniques.",
                   price: "RM 150", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" 
