@@ -2,6 +2,7 @@
 
 import React, { Suspense } from 'react';
 import { motion, type Variants } from 'framer-motion';
+import { Sparkles, ChefHat, MessageCircle } from 'lucide-react';
 import CalendarSection from '@/components/CalendarSection';
 
 const fadeIn: Variants = {
@@ -55,7 +56,7 @@ export default function Home() {
                 <span className="font-semibold italic">desserts.</span>
               </motion.h1>
               <motion.div variants={fadeIn} className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
-                <p className="mb-4">Learn to create beautiful desserts — and take them home 🍰</p>
+                <p className="mb-4">Learn to create beautiful desserts — and take them home <Sparkles className="w-5 h-5 ml-1 inline text-primary" /></p>
                 <ul className="text-base space-y-2 font-medium">
                   <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> No experience needed</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> All ingredients provided</li>
@@ -155,7 +156,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <p className="text-sm font-bold text-green-600 mt-6 flex items-center">
-                  <span className="text-xl mr-2">👩‍🍳</span> Perfect for beginners — we guide you step by step!
+                  <ChefHat className="w-5 h-5 mr-3 flex-shrink-0" /> Perfect for beginners — we guide you step by step!
                 </p>
               </motion.div>
               <motion.a variants={fadeIn} href="#calendar" className="text-primary font-bold border-b-2 border-primary pb-1 hover:text-charcoal hover:border-charcoal transition-all">
@@ -188,7 +189,7 @@ export default function Home() {
                   title: "Adults Cheesecake Duo", 
                   hours: "3 Hours", 
                   level: "Adults (18+)", 
-                  description: "Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session 🍰<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
+                  description: "Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 250", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" 
@@ -197,7 +198,7 @@ export default function Home() {
                   title: "Teens Brownie & Ice Cream", 
                   hours: "3 Hours", 
                   level: "Teens (13-17)", 
-                  description: "Create delicious brownies and make your own vanilla ice cream from scratch! 🍦<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
+                  description: "Create delicious brownies and make your own vanilla ice cream from scratch!<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 200", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" 
@@ -206,7 +207,7 @@ export default function Home() {
                   title: "Kids Cupcake Experience", 
                   hours: "3 Hours", 
                   level: "Kids (9-12)", 
-                  description: "Perfect for young bakers wanting to learn, create, and have fun in the kitchen! 🧁<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
+                  description: "Perfect for young bakers wanting to learn, create, and have fun in the kitchen!<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 150", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" 
@@ -266,7 +267,7 @@ export default function Home() {
                           rel="noopener noreferrer"
                           className="flex justify-center items-center gap-2 w-full text-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-xs font-medium text-gray-600"
                         >
-                          💬 Ask on WhatsApp before booking
+                          <MessageCircle className="w-4 h-4 mr-1.5" /> Ask on WhatsApp before booking
                         </a>
                       </div>
                     </div>

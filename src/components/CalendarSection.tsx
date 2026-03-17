@@ -16,7 +16,7 @@ import {
   subMonths,
 } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, CheckCircle2, Loader2, CalendarHeart, ExternalLink, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Loader2, CalendarHeart, ExternalLink, ChevronRight as ChevronRightIcon, AlertTriangle, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function CalendarSection() {
@@ -369,7 +369,7 @@ export default function CalendarSection() {
                 </div>
 
                 <div className="bg-orange-50 border border-orange-100 p-4 rounded-xl flex items-start gap-3">
-                  <span className="text-orange-500 mt-0.5">⚠️</span>
+                  <AlertTriangle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-orange-800">
                     <strong>Weekend slots fill up fast!</strong> There are only <strong className="font-bold">4 seats maximum</strong> per session to ensure personalized guidance.
                   </p>
@@ -431,11 +431,11 @@ export default function CalendarSection() {
                 <div className="space-y-4 pt-2">
                   <div className="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-2">
                     <p className="flex items-start gap-2">
-                      <span className="text-green-500">✅</span>
+                      <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                       <span>Secure your slot instantly with our online booking system.</span>
                     </p>
                     <p className="flex items-start gap-2">
-                      <span className="text-blue-500">💬</span>
+                      <MessageCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
                       <span>After booking, you can contact us directly via WhatsApp for any questions!</span>
                     </p>
                   </div>
@@ -467,7 +467,7 @@ export default function CalendarSection() {
                     rel="noopener noreferrer"
                     className="flex justify-center items-center gap-2 w-full text-center py-3 mt-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-sm font-medium text-gray-600"
                   >
-                    💬 Ask on WhatsApp before booking
+                    <MessageCircle className="w-4 h-4 mr-1.5" /> Ask on WhatsApp before booking
                   </a>
                 </div>
               </motion.form>
