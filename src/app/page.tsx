@@ -24,13 +24,13 @@ export default function Home() {
             Nicole's <span className="text-primary">Baking</span>
           </div>
           <div className="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
-            <a className="hover:text-primary transition-colors" href="#classes">Classes</a>
+            <a className="hover:text-primary transition-colors" href="#classes">Experiences</a>
             <a className="hover:text-primary transition-colors" href="#story">Our Story</a>
             <a className="hover:text-primary transition-colors" href="#calendar">Book Now</a>
           </div>
           <div>
             <a className="bg-primary text-white px-6 py-2.5 rounded-custom text-sm font-semibold hover:opacity-90 transition-all" href="#calendar">
-              Book a Class
+              Book an Experience
             </a>
           </div>
         </div>
@@ -48,18 +48,23 @@ export default function Home() {
               className="z-10"
             >
               <motion.span variants={fadeIn} className="text-primary font-semibold tracking-widest uppercase text-xs mb-4 block">
-                Master the Art of Flour
+                Hands-on baking experiences in Sandakan
               </motion.span>
               <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl font-light leading-tight mb-6">
-                Elevate your <br/>
-                <span className="font-semibold italic">baking craft.</span>
+                Create beautiful <br/>
+                <span className="font-semibold italic">desserts.</span>
               </motion.h1>
-              <motion.p variants={fadeIn} className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
-                Hands-on artisanal workshops designed for the modern home baker. From sourdough mastery to delicate pastry techniques.
-              </motion.p>
+              <motion.div variants={fadeIn} className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
+                <p className="mb-4">Learn to create beautiful desserts — and take them home 🍰</p>
+                <ul className="text-base space-y-2 font-medium">
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> No experience needed</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> All ingredients provided</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Small group experiences (max 4 students)</li>
+                </ul>
+              </motion.div>
               <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4">
                 <a className="bg-charcoal text-white px-8 py-4 rounded-custom text-center font-medium hover:bg-black transition-all" href="#classes">
-                  Explore Workshops
+                  Explore Experiences
                 </a>
                 <a className="border border-charcoal text-charcoal px-8 py-4 rounded-custom text-center font-medium hover:bg-charcoal hover:text-white transition-all" href="#calendar">
                   Check Schedule
@@ -130,7 +135,7 @@ export default function Home() {
                 Founded by Master Baker <span className="font-bold">Nicole Liew</span>, our studio is dedicated to preserving traditional baking methods while embracing modern aesthetics. We believe that baking is a sensory journey meant to be shared.
               </motion.p>
               <motion.div variants={fadeIn} className="bg-cream p-6 rounded-custom border border-gray-100 mb-8 shadow-sm">
-                <h3 className="font-bold text-lg mb-4 text-primary">Every Workshop Includes:</h3>
+                <h3 className="font-bold text-lg mb-4 text-primary">Why students love our experiences:</h3>
                 <ul className="space-y-3 text-sm text-gray-600">
                   <li className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>
@@ -149,6 +154,9 @@ export default function Home() {
                     <span><strong>Zero stress:</strong> We'll worry about the cleaning, you just have fun.</span>
                   </li>
                 </ul>
+                <p className="text-sm font-bold text-green-600 mt-6 flex items-center">
+                  <span className="text-xl mr-2">👩‍🍳</span> Perfect for beginners — we guide you step by step!
+                </p>
               </motion.div>
               <motion.a variants={fadeIn} href="#calendar" className="text-primary font-bold border-b-2 border-primary pb-1 hover:text-charcoal hover:border-charcoal transition-all">
                 Book your session today →
@@ -158,7 +166,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Classes Catalog */}
+        {/* Experiences Catalog */}
         <section className="section-padding bg-cream" id="classes">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div 
@@ -169,8 +177,8 @@ export default function Home() {
               className="flex justify-between items-end mb-12"
             >
               <div>
-                <h2 className="text-4xl font-light mb-2">Upcoming <span className="font-bold">Workshops</span></h2>
-                <p className="text-gray-500">Perfect for Kids, Teens, and Adults (2-4 hours per class).</p>
+                <h2 className="text-4xl font-light mb-2">Upcoming <span className="font-bold">Experiences</span></h2>
+                <p className="text-gray-500">Perfect for Kids, Teens, and Adults (2-4 hours per experience).</p>
               </div>
             </motion.div>
 
@@ -178,9 +186,9 @@ export default function Home() {
               {[
                 { 
                   title: "Adults Cheesecake Duo", 
-                  hours: "3 Sessions on Sun", 
+                  hours: "3 Hours", 
                   level: "Adults (18+)", 
-                  description: "A cozy small-group baking workshop where you learn to master cotton & no-bake cheesecake, bake, and enjoy a relaxing experience.",
+                  description: "Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session 🍰<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 250", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" 
@@ -189,36 +197,32 @@ export default function Home() {
                   title: "Teens Brownie & Ice Cream", 
                   hours: "3 Hours", 
                   level: "Teens (13-17)", 
-                  description: "A hands-on baking experience designed for teens who love desserts and creativity. Bake delicious brownies and make your own vanilla ice cream.",
+                  description: "Create delicious brownies and make your own vanilla ice cream from scratch! 🍦<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 200", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" 
                 },
                 { 
-                  title: "Kids Cupcake Class", 
+                  title: "Kids Cupcake Experience", 
                   hours: "3 Hours", 
                   level: "Kids (9-12)", 
-                  description: "Perfect for young bakers who want to learn, create, and have fun in the kitchen. Learn cupcake baking, icing, and fun decoration techniques.",
+                  description: "Perfect for young bakers wanting to learn, create, and have fun in the kitchen! 🧁<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 150", 
                   status: "Open", 
                   src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" 
                 },
               ].map((cls, idx) => (
-                <a 
-                  key={idx}
-                  href="#calendar"
-                  className="block group cursor-pointer h-full"
-                >
+                <div key={idx} className="h-full">
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.6, delay: idx * 0.15 }}
-                    className="bg-white p-4 rounded-custom border border-gray-100 shadow-sm hover:shadow-xl transition-all h-full flex flex-col"
+                    className="bg-white p-4 rounded-custom border border-gray-100 shadow-sm hover:shadow-xl transition-all h-full flex flex-col group"
                   >
-                  <div className="img-hover-zoom rounded-custom mb-6 aspect-[4/3] bg-gray-100 overflow-hidden">
+                  <a href="#calendar" className="block img-hover-zoom rounded-custom mb-6 aspect-[4/3] bg-gray-100 overflow-hidden relative">
                     <img alt={cls.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={cls.src}/>
-                  </div>
+                  </a>
                   <div className="flex flex-col flex-grow">
                     <div className="flex justify-between items-start mb-2">
                       <span className="bg-primary/10 text-primary text-[10px] font-bold uppercase px-2 py-1 rounded">
@@ -233,23 +237,42 @@ export default function Home() {
                         <span className="bg-red-100 text-red-700 text-[10px] font-bold uppercase px-2 py-1 rounded">Sold Out</span>
                       )}
                     </div>
-                    <h3 className="text-2xl font-semibold mb-2 text-charcoal">{cls.title}</h3>
-                    <p className="text-sm text-gray-500 mb-4 line-clamp-3 leading-relaxed">
-                      {cls.description}
-                    </p>
-                    <div className="mt-auto pt-6 border-t border-gray-50 flex justify-between items-center text-sm">
-                      <div className="flex flex-col">
-                        <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Duration</span>
-                        <span className="font-semibold text-charcoal">{cls.hours}</span>
+                    <a href="#calendar" className="block hover:text-primary transition-colors">
+                      <h3 className="text-2xl font-semibold mb-2 text-charcoal">{cls.title}</h3>
+                    </a>
+                    <p 
+                      className="text-sm text-gray-600 mb-4 leading-relaxed flex-grow" 
+                      dangerouslySetInnerHTML={{ __html: cls.description.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+                    ></p>
+                    <div className="mt-auto pt-4 border-t border-gray-50 text-sm">
+                      <div className="flex justify-between items-center mb-6">
+                        <div className="flex flex-col">
+                          <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Duration</span>
+                          <span className="font-semibold text-charcoal">{cls.hours}</span>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Course Fee</span>
+                          <p className="text-xl font-bold text-primary">{cls.price}</p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Course Fee</span>
-                        <p className="text-xl font-bold text-primary">{cls.price}</p>
+                      
+                      <div className="space-y-2">
+                        <a href="#calendar" className="block w-full text-center bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary/90 transition-all">
+                          Book Now
+                        </a>
+                        <a 
+                          href={`https://wa.me/601133848412?text=Hi%20I’m%20interested%20in%20your%20baking%20class`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex justify-center items-center gap-2 w-full text-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-xs font-medium text-gray-600"
+                        >
+                          💬 Ask on WhatsApp before booking
+                        </a>
                       </div>
                     </div>
-                    </div>
+                  </div>
                   </motion.div>
-                </a>
+                </div>
               ))}
             </div>
           </div>
@@ -305,7 +328,7 @@ export default function Home() {
           <div>
             <h4 className="font-bold uppercase text-xs tracking-widest mb-6">Explore</h4>
             <ul className="space-y-4 text-sm text-gray-500">
-              <li><a className="hover:text-primary transition-colors" href="#">All Classes</a></li>
+              <li><a className="hover:text-primary transition-colors" href="#">All Experiences</a></li>
               <li><a className="hover:text-primary transition-colors" href="#">Private Events</a></li>
             </ul>
           </div>

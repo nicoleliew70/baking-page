@@ -363,8 +363,15 @@ export default function CalendarSection() {
                     Ready to <span className="font-bold text-primary">Join?</span>
                   </h3>
                   <p className="text-gray-500">
-                    <strong className="text-charcoal">{getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} Workshop:</strong> {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time} <br/>
+                    <strong className="text-charcoal">{getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.group} Experience:</strong> {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.time} <br/>
                     {format(selectedDate, 'MMMM do')} • <span className="text-primary font-bold">RM {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.price}</span>
+                  </p>
+                </div>
+
+                <div className="bg-orange-50 border border-orange-100 p-4 rounded-xl flex items-start gap-3">
+                  <span className="text-orange-500 mt-0.5">⚠️</span>
+                  <p className="text-sm text-orange-800">
+                    <strong>Weekend slots fill up fast!</strong> There are only <strong className="font-bold">4 seats maximum</strong> per session to ensure personalized guidance.
                   </p>
                 </div>
                 
@@ -421,26 +428,48 @@ export default function CalendarSection() {
                   </p>
                 </div>
 
-                <button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="w-full bg-charcoal text-white font-medium py-4 rounded-xl hover:bg-black transition-all flex items-center justify-center space-x-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>Opening Secure Payment...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Proceed to Payment (RM {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.price})</span>
-                      <ExternalLink className="w-4 h-4 ml-1 opacity-70" />
-                    </>
-                  )}
-                </button>
-                <p className="text-[10px] text-center text-gray-400 uppercase tracking-widest font-bold">
-                  Secured by Stripe
-                </p>
+                <div className="space-y-4 pt-2">
+                  <div className="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-2">
+                    <p className="flex items-start gap-2">
+                      <span className="text-green-500">✅</span>
+                      <span>Secure your slot instantly with our online booking system.</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-blue-500">💬</span>
+                      <span>After booking, you can contact us directly via WhatsApp for any questions!</span>
+                    </p>
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full bg-charcoal text-white font-medium py-4 rounded-xl hover:bg-black transition-all flex items-center justify-center space-x-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Opening Secure Payment...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Proceed to Payment (RM {getDaySlots(selectedDate).find(s => s.id === selectedSlot)?.price})</span>
+                        <ExternalLink className="w-4 h-4 ml-1 opacity-70" />
+                      </>
+                    )}
+                  </button>
+                  <p className="text-[10px] text-center text-gray-400 uppercase tracking-widest font-bold">
+                    Secured by Stripe
+                  </p>
+
+                  <a 
+                    href={`https://wa.me/${WORKSHOP_CONFIG.general.whatsappNumber}?text=Hi%20I’m%20interested%20in%20your%20baking%20class`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex justify-center items-center gap-2 w-full text-center py-3 mt-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-sm font-medium text-gray-600"
+                  >
+                    💬 Ask on WhatsApp before booking
+                  </a>
+                </div>
               </motion.form>
             )}
           </AnimatePresence>

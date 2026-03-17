@@ -2,13 +2,13 @@ export const WORKSHOP_CONFIG = {
   pricing: {
     A: { 
       id: 'A',
-      label: 'Kids Cupcake Class (9-12)', 
+      label: 'Kids Cupcake Experience (9-12)', 
       group: 'Kids (9-12)', 
       price: 150, 
       priceInCents: 15000,
       time: '3pm - 6pm',
       duration: '3 Hours',
-      description: 'Learn cupcake baking, icing & deco. Perfect for young bakers who want to learn, create, and have fun in the kitchen.'
+      description: 'Perfect for young bakers wanting to learn, create, and have fun in the kitchen! 🧁<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)'
     },
     B: { 
       id: 'B',
@@ -18,7 +18,7 @@ export const WORKSHOP_CONFIG = {
       priceInCents: 20000,
       time: '7pm - 10pm',
       duration: '3 Hours',
-      description: 'Bake delicious brownies and make your own vanilla ice cream. A hands-on baking experience designed for teens who love desserts and creativity.'
+      description: 'Create delicious brownies and make your own vanilla ice cream from scratch! 🍦<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)'
     },
     C: { 
       id: 'C',
@@ -28,7 +28,7 @@ export const WORKSHOP_CONFIG = {
       priceInCents: 25000,
       time: '10am - 1pm',
       duration: '3 Hours',
-      description: 'Master cotton & no-bake cheesecake. A cozy small-group baking workshop where you learn, bake, and enjoy a relaxing experience.'
+      description: 'Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session 🍰<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)'
     },
     D: { 
       id: 'D',
@@ -38,7 +38,7 @@ export const WORKSHOP_CONFIG = {
       priceInCents: 25000,
       time: '2pm - 5pm',
       duration: '3 Hours',
-      description: 'Master cotton & no-bake cheesecake. A cozy small-group baking workshop where you learn, bake, and enjoy a relaxing experience.'
+      description: 'Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session 🍰<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)'
     },
     E: { 
       id: 'E',
@@ -48,7 +48,7 @@ export const WORKSHOP_CONFIG = {
       priceInCents: 25000,
       time: '7pm - 10pm',
       duration: '3 Hours',
-      description: 'Master cotton & no-bake cheesecake. A cozy small-group baking workshop where you learn, bake, and enjoy a relaxing experience.'
+      description: 'Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session 🍰<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)'
     },
   },
   general: {
