@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { Sparkles, ChefHat, MessageCircle } from 'lucide-react';
 import CalendarSection from '@/components/CalendarSection';
+import { EventSchema, FAQSchema, BreadcrumbSchema, PersonSchema } from '@/components/SeoSchemas';
 
 const fadeIn: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -18,6 +19,12 @@ const staggerContainer: Variants = {
 export default function Home() {
   return (
     <>
+      {/* SEO Schemas */}
+      <EventSchema />
+      <FAQSchema />
+      <BreadcrumbSchema />
+      <PersonSchema />
+
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-cream/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -39,21 +46,21 @@ export default function Home() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" aria-label="Hero section">
           <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            
-            <motion.div 
-              initial="hidden" 
-              animate="visible" 
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
               variants={staggerContainer}
               className="z-10"
             >
               <motion.span variants={fadeIn} className="text-primary font-semibold tracking-widest uppercase text-xs mb-4 block">
-                Hands-on baking experiences in Sandakan
+                Hands-on baking experiences in Sandakan, Sabah
               </motion.span>
               <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl font-light leading-tight mb-6">
                 Create beautiful <br/>
-                <span className="font-semibold italic">desserts.</span>
+                <span className="font-semibold italic">desserts</span>
               </motion.h1>
               <motion.div variants={fadeIn} className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
                 <p className="mb-4">Learn to create beautiful desserts — and take them home <Sparkles className="w-5 h-5 ml-1 inline text-primary" /></p>
@@ -103,7 +110,7 @@ export default function Home() {
         </section>
 
         {/* Our Story */}
-        <section className="section-padding bg-white" id="story">
+        <section className="section-padding bg-white" id="story" aria-label="Our story section">
           <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
             
             <motion.div 
@@ -168,7 +175,7 @@ export default function Home() {
         </section>
 
         {/* Experiences Catalog */}
-        <section className="section-padding bg-cream" id="classes">
+        <section className="section-padding bg-cream" id="classes" aria-label="Available experiences section">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -285,7 +292,7 @@ export default function Home() {
         </Suspense>
 
         {/* Testimonials */}
-        <section className="section-padding bg-charcoal text-white text-center">
+        <section className="section-padding bg-charcoal text-white text-center" aria-label="Student testimonials section">
           <div className="max-w-3xl mx-auto px-6">
             <svg className="w-12 h-12 text-primary mx-auto mb-8 opacity-50" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V4H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM3.017 21L3.017 18C3.017 16.8954 3.91243 16 5.017 16H8.017C8.56928 16 9.017 15.5523 9.017 15V9C9.017 8.44772 8.56928 8 8.017 8H4.017C3.46472 8 3.017 8.44772 3.017 9V11C3.017 11.5523 2.56928 12 2.017 12H1.017V4H11.017V15C11.017 18.3137 8.33071 21 5.017 21H3.017Z"></path>
