@@ -7,12 +7,16 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { CheckCircle2, MessageSquare, ArrowLeft, Loader2 } from 'lucide-react';
 import { WORKSHOP_CONFIG } from '@/lib/config';
+import { trackEvent } from '@/lib/gtag';
 
 export default function SuccessPage() {
   const router = useRouter();
   const [countdown, setCountdown] = useState(15);
 
   useEffect(() => {
+    // Track successful purchase
+    trackEvent('purchase', 'ecommerce', 'Booking Success');
+
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -94,6 +98,7 @@ export default function SuccessPage() {
               href={`https://wa.me/${WORKSHOP_CONFIG.general.whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent('generate_lead', 'whatsapp', 'Success Page WhatsApp Click')}
               className="flex items-center justify-center gap-3 w-full bg-[#25D366] text-white font-semibold py-4 rounded-custom hover:bg-[#20bd5a] transition-all shadow-md shadow-green-200"
             >
               <MessageSquare className="w-5 h-5" />

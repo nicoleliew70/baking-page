@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { WORKSHOP_CONFIG, SlotId } from '@/lib/config';
+import { trackEvent } from '@/lib/gtag';
 import {
   addMonths,
   eachDayOfInterval,
@@ -107,6 +108,11 @@ export default function CalendarSection() {
       const data = await response.json();
       
       if (response.ok && data.url) {
+        // Track the checkout intent
+        const selectedConfig = getDaySlots(selectedDate).find(s => s.id === selectedSlot);
+        if (selectedConfig) {
+          trackEvent('begin_checkout', 'ecommerce', selectedConfig.label, selectedConfig.price);
+        }
         // Redirect to Stripe Checkout
         window.location.href = data.url;
       } else {
@@ -185,13 +191,15 @@ export default function CalendarSection() {
               const dayStr = format(day, 'yyyy-MM-dd');
               const isAllowedDate = dayStr === '2026-04-04' || dayStr === '2026-04-05';
               
+              // Only apply the "fully booked" illusion to March and April 2026
+              const isRestrictedPeriod = day.getFullYear() === 2026 && day.getMonth() <= 3;
+              
               const daySlots = getDaySlots(day);
               const isWeekend = daySlots.length > 0;
               
-              // A day is 'fully booked' if all its slots are full OR if it's a weekend date we want to hide/show as booked
               const daySlotCounts = slotCounts[dayStr] || {};
               const isActuallyFull = isWeekend && daySlots.every(slot => (daySlotCounts[slot.id] || 0) >= 4);
-              const isFullyBooked = isActuallyFull || (isWeekend && !isAllowedDate);
+              const isFullyBooked = isActuallyFull || (isWeekend && isRestrictedPeriod && !isAllowedDate);
 
               const isSelected = selectedDate && isSameDay(day, selectedDate);
               const disabled = !isCurrentMonth || past || isFullyBooked || !isWeekend || isLoadingAvailability;
@@ -468,6 +476,7 @@ export default function CalendarSection() {
                     href={`https://wa.me/${WORKSHOP_CONFIG.general.whatsappNumber}?text=Hi%20I’m%20interested%20in%20your%20baking%20class`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackEvent('generate_lead', 'whatsapp', 'Booking Form WhatsApp Click')}
                     className="flex justify-center items-center gap-2 w-full text-center py-3 mt-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-sm font-medium text-gray-600"
                   >
                     <MessageCircle className="w-4 h-4 mr-1.5" /> Ask on WhatsApp before booking

@@ -131,6 +131,20 @@ export default function RootLayout({
     <html lang="en" className={`scroll-smooth ${workSans.variable}`}>
       <head>
         <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-2JYB7SHDXV"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-2JYB7SHDXV');
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
           suppressHydrationWarning

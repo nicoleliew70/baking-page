@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { Sparkles, ChefHat, MessageCircle } from 'lucide-react';
 import CalendarSection from '@/components/CalendarSection';
+import { trackEvent } from '@/lib/gtag';
 import { EventSchema, FAQSchema, BreadcrumbSchema, PersonSchema } from '@/components/SeoSchemas';
 
 const fadeIn: Variants = {
@@ -37,7 +38,7 @@ export default function Home() {
             <a className="hover:text-primary transition-colors" href="#calendar">Book Now</a>
           </div>
           <div>
-            <a className="bg-primary text-white px-6 py-2.5 rounded-custom text-sm font-semibold hover:opacity-90 transition-all" href="#calendar">
+            <a className="bg-primary text-white px-6 py-2.5 rounded-custom text-sm font-semibold hover:opacity-90 transition-all" href="#calendar" onClick={() => trackEvent('click', 'navigation', 'Nav - Book an Experience')}>
               Book an Experience
             </a>
           </div>
@@ -71,10 +72,10 @@ export default function Home() {
                 </ul>
               </motion.div>
               <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4">
-                <a className="bg-charcoal text-white px-8 py-4 rounded-custom text-center font-medium hover:bg-black transition-all" href="#classes">
+                <a className="bg-charcoal text-white px-8 py-4 rounded-custom text-center font-medium hover:bg-black transition-all" href="#classes" onClick={() => trackEvent('click', 'hero', 'Hero - Explore Experiences')}>
                   Explore Experiences
                 </a>
-                <a className="border border-charcoal text-charcoal px-8 py-4 rounded-custom text-center font-medium hover:bg-charcoal hover:text-white transition-all" href="#calendar">
+                <a className="border border-charcoal text-charcoal px-8 py-4 rounded-custom text-center font-medium hover:bg-charcoal hover:text-white transition-all" href="#calendar" onClick={() => trackEvent('click', 'hero', 'Hero - Check Schedule')}>
                   Check Schedule
                 </a>
               </motion.div>
@@ -166,7 +167,7 @@ export default function Home() {
                   <ChefHat className="w-5 h-5 mr-3 flex-shrink-0" /> Perfect for beginners — we guide you step by step!
                 </p>
               </motion.div>
-              <motion.a variants={fadeIn} href="#calendar" className="text-primary font-bold border-b-2 border-primary pb-1 hover:text-charcoal hover:border-charcoal transition-all">
+              <motion.a variants={fadeIn} href="#calendar" className="text-primary font-bold border-b-2 border-primary pb-1 hover:text-charcoal hover:border-charcoal transition-all" onClick={() => trackEvent('click', 'story', 'Story - Book Today Link')}>
                 Book your session today →
               </motion.a>
             </motion.div>
@@ -265,13 +266,14 @@ export default function Home() {
                       </div>
                       
                       <div className="space-y-2">
-                        <a href="#calendar" className="block w-full text-center bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary/90 transition-all">
+                        <a href="#calendar" onClick={() => trackEvent('click', 'class_card', `Class - Book Now - ${cls.title}`)} className="block w-full text-center bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary/90 transition-all">
                           Book Now
                         </a>
                         <a 
                           href={`https://wa.me/601133848412?text=Hi%20I’m%20interested%20in%20your%20baking%20class`}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() => trackEvent('generate_lead', 'whatsapp', `Class - WhatsApp - ${cls.title}`)}
                           className="flex justify-center items-center gap-2 w-full text-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-xs font-medium text-gray-600"
                         >
                           <MessageCircle className="w-4 h-4 mr-1.5" /> Ask on WhatsApp before booking
@@ -306,8 +308,8 @@ export default function Home() {
               "The Fundamentals class changed my entire perspective on baking! Nicole's teaching style is patient, precise, and incredibly inspiring. I highly recommend her Sandakan workshop to anyone wanting to learn."
             </motion.p>
             <div className="flex items-center justify-center space-x-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-400">
-                <img alt="Aisyah Rahman" className="w-full h-full object-cover" src="/reviewer.webp"/>
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-primary/20 flex items-center justify-center border border-primary/30">
+                <span className="text-primary font-bold text-sm">AR</span>
               </div>
               <div className="text-left">
                 <p className="font-bold">Aisyah Rahman</p>
