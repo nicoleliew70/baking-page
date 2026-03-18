@@ -24,4 +24,4 @@ User-agent: DotBot
 Disallow: /
 
 # Sitemap
-Sitemap: https://nicolebaking.com/sitemap.xml
+Sitemap: https://chefnicole.pages.dev/sitemap.xml
