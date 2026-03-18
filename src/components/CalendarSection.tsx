@@ -183,12 +183,15 @@ export default function CalendarSection() {
               const past = isBefore(day, today);
               
               const dayStr = format(day, 'yyyy-MM-dd');
+              const isAllowedDate = dayStr === '2026-04-04' || dayStr === '2026-04-05';
+              
               const daySlots = getDaySlots(day);
               const isWeekend = daySlots.length > 0;
               
-              // A day is 'fully booked' only if all its slots have 4 or more bookings
+              // A day is 'fully booked' if all its slots are full OR if it's a weekend date we want to hide/show as booked
               const daySlotCounts = slotCounts[dayStr] || {};
-              const isFullyBooked = isWeekend && daySlots.every(slot => (daySlotCounts[slot.id] || 0) >= 4);
+              const isActuallyFull = isWeekend && daySlots.every(slot => (daySlotCounts[slot.id] || 0) >= 4);
+              const isFullyBooked = isActuallyFull || (isWeekend && !isAllowedDate);
 
               const isSelected = selectedDate && isSameDay(day, selectedDate);
               const disabled = !isCurrentMonth || past || isFullyBooked || !isWeekend || isLoadingAvailability;
