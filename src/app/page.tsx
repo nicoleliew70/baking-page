@@ -88,9 +88,9 @@ export default function Home() {
             >
               <div className="rounded-custom overflow-hidden shadow-2xl hover:rotate-0 transition-transform duration-700">
                 <img 
-                  alt="Fresh sourdough bread on a table" 
-                  className="w-full h-[600px] object-cover" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuChLqL8wEuDk2aIH49F2yK69u86anHNKzsVDOaYBUSV-G04mYEm3gEISdBiNYhaRMfDv08uSh_ymijGgxNj2Qgd-GIXkxIpSlPg6_kVqtaoKVKEfEHla4ffqVCXhzz4_NYjSLv2SOY8DnQGRI6II6-CIeYIwz-eAg8wE7O4i48lw7U9hoWTQx1dftEt3_dL2NsCJZr4N6GOueVWds19EOK8hd3jjaGn-HloOaUxyJ9H0qMtpuCikkjG9mzKXTF1YCpMX41owe0VhgRG"
+                  alt="Nicole Liew, Master Baker at Nicole's Baking" 
+                  className="w-full h-[600px] object-cover object-top" 
+                  src="/chef-nicole.webp"
                 />
               </div>
               
@@ -121,11 +121,11 @@ export default function Home() {
               className="order-2 md:order-1 grid grid-cols-2 gap-4"
             >
               <motion.div variants={fadeIn} className="space-y-4 pt-12">
-                <img alt="Baker dusting flour" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7NnYfq1F-iVZ4VGyHBrFQKgVWJL99V81H5NAyDVRSmlG_0DxYjGupfFMTA6CtMfO8pvgVG3sPs6j3VCsgQJMb3g9TzqsThSsX2IU2TE9su9P9NDVd639IAeDYvm6rhZw9B6WkrJdm07VAq6c5_b2esPni2QNjWvpWyp0ZxdOLaEKJxIBzGnxP7WOme7ziAksIs0DpZt-w0nLR4QOgTNKIXvCWH88uct7GacsIFoe2ZbHRbnUMxGLt3jXFldJr5EAvV56KF7v7qElL"/>
-                <img alt="Rolling dough" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcZRwdW37UQ9GO9W3R_CK-rUzpDLfZ0k0O3u2TruMxeJPHyJraAqFAr-WosUs8BZrd2NG0yt62_bs2I1xR4xI0WrNWyDG_NIZf8uurf2ddyuX585A-NLic2pCgQ8A981QvpNmez9UQyUFqyNUArFkuZSUutQ3QOmF97nGuiDyWmVAc-HVXFDP9MQdWl7pRA643ZxGdKu5P3O6nLjlrWuJW-fkoYVH26Qz5qymreAM83I1gFzFgXVh8VQ7zDPJ_DGbIiD2azic3bmB7"/>
+                <img alt="Nicole Liew teaching a student" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500 w-full object-cover" src="/story-teaching.webp"/>
+                <img alt="A group posing with their fresh bakes" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500 w-full object-cover" src="/story-group.webp"/>
               </motion.div>
               <motion.div variants={fadeIn} className="space-y-4">
-                <img alt="Finished pastries" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGRN4XUjHC_HbKKMjFjGrELfVGdaS7IPoPupbXlfC4f9p1sfPs_Btwswn5UYTnT01Z_4nHzL_34DNAF8tFWVcQuZlfbJWUe0C1gUVXQI91mXAjyYcFPlOqxp78z-8JwQJ80e7nxWdvqdGv66Q9oXSHyTEQC8mM4ZFcr_9sLGJxCEkN6oti11lJboaawskL9Yc4lK1k9Gc67BJ3AToFNiko5YRhVD25byrjrfyecX62IzDCzFW_0xw9ur5-Cm1oARmNtVJ4mqOoX1bH"/>
+                <img alt="Nicole Liew holding a fresh sourdough loaf" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500 w-full object-cover" src="/story-sourdough.webp"/>
               </motion.div>
             </motion.div>
 
@@ -199,7 +199,7 @@ export default function Home() {
                   description: "Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 250", 
                   status: "Open", 
-                  src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A" 
+                  src: "/cheesecake-experience.webp" 
                 },
                 { 
                   title: "Teens Brownie & Ice Cream", 
@@ -208,7 +208,7 @@ export default function Home() {
                   description: "Create delicious brownies and make your own vanilla ice cream from scratch!<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 200", 
                   status: "Open", 
-                  src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6" 
+                  src: "/brownie-experience.webp" 
                 },
                 { 
                   title: "Kids Cupcake Experience", 
@@ -217,7 +217,7 @@ export default function Home() {
                   description: "Perfect for young bakers wanting to learn, create, and have fun in the kitchen!<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
                   price: "RM 150", 
                   status: "Open", 
-                  src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL" 
+                  src: "/cupcake-experience.webp" 
                 },
               ].map((cls, idx) => (
                 <div key={idx} className="h-full">
@@ -307,7 +307,7 @@ export default function Home() {
             </motion.p>
             <div className="flex items-center justify-center space-x-4">
               <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-400">
-                <img alt="Aisyah Rahman" className="w-full h-full object-cover" src="/reviewer.png"/>
+                <img alt="Aisyah Rahman" className="w-full h-full object-cover" src="/reviewer.webp"/>
               </div>
               <div className="text-left">
                 <p className="font-bold">Aisyah Rahman</p>
