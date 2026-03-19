@@ -38,11 +38,11 @@ export const metadata: Metadata = {
     description: 'Learn artisanal baking with expert guidance. Hands-on workshops for all skill levels.',
     images: [
       {
-        url: 'https://nicolebaking.com/og-image.jpg',
+        url: 'https://nicolebaking.com/chef-nicole.webp',
         width: 1200,
         height: 630,
         alt: "Nicole's Baking Studio",
-        type: 'image/jpeg',
+        type: 'image/webp',
       },
     ],
   },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     creator: '@nicolebaking',
     title: "Nicole's Baking Studio | Baking Classes",
     description: 'Artisanal baking workshops in Sandakan',
-    images: ['https://nicolebaking.com/og-image.jpg'],
+    images: ['https://nicolebaking.com/chef-nicole.webp'],
   },
   viewport: {
     width: 'device-width',
@@ -80,7 +80,7 @@ export default function RootLayout({
     url: 'https://nicolebaking.com',
     telephone: '+60113384841 2',
     email: 'nicoleliew70@gmail.com',
-    image: 'https://nicolebaking.com/og-image.jpg',
+    image: 'https://nicolebaking.com/chef-nicole.webp',
     priceRange: 'RM150-RM250',
     address: {
       '@type': 'PostalAddress',
