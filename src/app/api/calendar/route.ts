@@ -20,7 +20,17 @@ export async function GET(request: Request) {
 
     const slotCounts = await getCalendarAvailability(startRange, endRange);
 
-    return NextResponse.json({ slotCounts });
+    const sheetId = process.env.GOOGLE_SHEET_ID;
+    let allowedDates: string[] = [];
+    if (sheetId) {
+      const { getAllowedDatesFromSheet } = await import('@/lib/googleSheets');
+      allowedDates = await getAllowedDatesFromSheet(sheetId);
+    } else {
+      // Fallback if not configured yet
+      allowedDates = ['2026-04-04', '2026-04-05'];
+    }
+
+    return NextResponse.json({ slotCounts, allowedDates });
   } catch (error) {
     console.error('Failed to fetch calendar:', error);
     return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });

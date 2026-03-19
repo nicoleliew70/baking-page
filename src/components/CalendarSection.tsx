@@ -28,6 +28,7 @@ export default function CalendarSection() {
   const [submitted, setSubmitted] = useState(false);
   
   const [slotCounts, setSlotCounts] = useState<Record<string, Record<string, number>>>({});
+  const [allowedDates, setAllowedDates] = useState<string[]>(['2026-04-04', '2026-04-05']); // fallback
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(true);
 
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
@@ -67,6 +68,9 @@ export default function CalendarSection() {
         if (response.ok) {
           const data = await response.json();
           setSlotCounts(data.slotCounts || {});
+          if (data.allowedDates) {
+            setAllowedDates(data.allowedDates);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch availability', error);
@@ -189,20 +193,26 @@ export default function CalendarSection() {
               const past = isBefore(day, today);
               
               const dayStr = format(day, 'yyyy-MM-dd');
-              const isAllowedDate = dayStr === '2026-04-04' || dayStr === '2026-04-05';
-              
-              // Only apply the "fully booked" illusion to March and April 2026
-              const isRestrictedPeriod = day.getFullYear() === 2026 && day.getMonth() <= 3;
+              const isAllowedDate = allowedDates.includes(dayStr);
               
               const daySlots = getDaySlots(day);
               const isWeekend = daySlots.length > 0;
               
               const daySlotCounts = slotCounts[dayStr] || {};
               const isActuallyFull = isWeekend && daySlots.every(slot => (daySlotCounts[slot.id] || 0) >= 4);
-              const isFullyBooked = isActuallyFull || (isWeekend && isRestrictedPeriod && !isAllowedDate);
+              
+              // Dates before the earliest allowed date show as fully booked to create urgency
+              // Dates after are simply unavailable for now
+              const sortedAllowed = [...allowedDates].sort();
+              const earliestAllowed = sortedAllowed.length > 0 ? new Date(sortedAllowed[0] + 'T00:00:00') : new Date('2099-12-31T00:00:00');
+              
+              const isBeforeAllowed = day < earliestAllowed;
+              
+              const isFullyBooked = isActuallyFull || (isWeekend && isBeforeAllowed && !isAllowedDate);
+              const isUnavailable = isWeekend && !isAllowedDate && !isBeforeAllowed;
 
               const isSelected = selectedDate && isSameDay(day, selectedDate);
-              const disabled = !isCurrentMonth || past || isFullyBooked || !isWeekend || isLoadingAvailability;
+              const disabled = !isCurrentMonth || past || isFullyBooked || isUnavailable || !isWeekend || isLoadingAvailability;
 
               return (
                 <button
@@ -216,7 +226,7 @@ export default function CalendarSection() {
                     "aspect-square flex items-center justify-center rounded-xl text-sm transition-all relative overflow-hidden",
                     !isCurrentMonth && "opacity-30",
                     past && "opacity-30 cursor-not-allowed",
-                    (!isWeekend || isFullyBooked) && !past && "bg-gray-50 text-gray-400 cursor-not-allowed opacity-50",
+                    (!isWeekend || isFullyBooked || isUnavailable) && !past && "bg-gray-50 text-gray-400 cursor-not-allowed opacity-50",
                     isFullyBooked && "line-through text-red-400",
                     !disabled && !isSelected && "hover:bg-primary/10 hover:text-primary",
                     isSelected && "bg-primary text-white font-bold shadow-md shadow-primary/30"
