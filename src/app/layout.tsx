@@ -27,18 +27,18 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://nicolebaking.com',
+    canonical: 'https://chefnicole.pages.dev',
   },
   openGraph: {
     type: 'website',
     locale: 'en_MY',
-    url: 'https://nicolebaking.com',
+    url: 'https://chefnicole.pages.dev',
     siteName: "Nicole's Baking Studio",
     title: "Nicole's Baking Studio | Baking Classes in Sandakan",
     description: 'Learn artisanal baking with expert guidance. Hands-on workshops for all skill levels.',
     images: [
       {
-        url: 'https://nicolebaking.com/chef-nicole.webp',
+        url: 'https://chefnicole.pages.dev/chef-nicole.webp',
         width: 1200,
         height: 630,
         alt: "Nicole's Baking Studio",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     creator: '@nicolebaking',
     title: "Nicole's Baking Studio | Baking Classes",
     description: 'Artisanal baking workshops in Sandakan',
-    images: ['https://nicolebaking.com/chef-nicole.webp'],
+    images: ['https://chefnicole.pages.dev/chef-nicole.webp'],
   },
   viewport: {
     width: 'device-width',
@@ -74,13 +74,13 @@ export default function RootLayout({
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': 'https://nicolebaking.com',
+    '@id': 'https://chefnicole.pages.dev',
     name: "Nicole's Baking Studio",
     description: 'Master the art of artisanal baking with expert-led hands-on workshops',
-    url: 'https://nicolebaking.com',
+    url: 'https://chefnicole.pages.dev',
     telephone: '+60113384841 2',
     email: 'nicoleliew70@gmail.com',
-    image: 'https://nicolebaking.com/chef-nicole.webp',
+    image: 'https://chefnicole.pages.dev/chef-nicole.webp',
     priceRange: 'RM150-RM250',
     address: {
       '@type': 'PostalAddress',
@@ -112,8 +112,8 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: "Nicole's Baking Studio",
-    url: 'https://nicolebaking.com',
-    logo: 'https://nicolebaking.com/logo.png',
+    url: 'https://chefnicole.pages.dev',
+    logo: 'https://chefnicole.pages.dev/logo.png',
     description: 'Artisanal baking workshops and classes',
     sameAs: [
       'https://wa.me/601133848412',

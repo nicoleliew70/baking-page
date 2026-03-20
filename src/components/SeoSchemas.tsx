@@ -11,12 +11,18 @@ export function EventSchema() {
       startDate: '2026-04-01',
       endDate: '2026-12-31',
       eventDuration: 'PT3H',
+      performer: {
+        '@type': 'Person',
+        name: 'Nicole Liew',
+        jobTitle: 'Master Baker',
+      },
       offers: {
         '@type': 'Offer',
-        url: 'https://nicolebaking.com#calendar',
+        url: 'https://chefnicole.pages.dev/#calendar',
         price: '250',
         priceCurrency: 'MYR',
         availability: 'https://schema.org/InStock',
+        validFrom: '2026-04-01',
       },
       location: {
         '@type': 'Place',
@@ -33,7 +39,7 @@ export function EventSchema() {
       organizer: {
         '@type': 'Organization',
         name: "Nicole's Baking Studio",
-        url: 'https://nicolebaking.com',
+        url: 'https://chefnicole.pages.dev',
         telephone: '+60113384841 2',
       },
       aggregateRating: {
@@ -53,12 +59,18 @@ export function EventSchema() {
       startDate: '2026-04-01',
       endDate: '2026-12-31',
       eventDuration: 'PT3H',
+      performer: {
+        '@type': 'Person',
+        name: 'Nicole Liew',
+        jobTitle: 'Master Baker',
+      },
       offers: {
         '@type': 'Offer',
-        url: 'https://nicolebaking.com#calendar',
+        url: 'https://chefnicole.pages.dev/#calendar',
         price: '200',
         priceCurrency: 'MYR',
         availability: 'https://schema.org/InStock',
+        validFrom: '2026-04-01',
       },
       location: {
         '@type': 'Place',
@@ -75,7 +87,7 @@ export function EventSchema() {
       organizer: {
         '@type': 'Organization',
         name: "Nicole's Baking Studio",
-        url: 'https://nicolebaking.com',
+        url: 'https://chefnicole.pages.dev',
         telephone: '+60113384841 2',
       },
     },
@@ -90,12 +102,18 @@ export function EventSchema() {
       startDate: '2026-04-01',
       endDate: '2026-12-31',
       eventDuration: 'PT3H',
+      performer: {
+        '@type': 'Person',
+        name: 'Nicole Liew',
+        jobTitle: 'Master Baker',
+      },
       offers: {
         '@type': 'Offer',
-        url: 'https://nicolebaking.com#calendar',
+        url: 'https://chefnicole.pages.dev/#calendar',
         price: '150',
         priceCurrency: 'MYR',
         availability: 'https://schema.org/InStock',
+        validFrom: '2026-04-01',
       },
       location: {
         '@type': 'Place',
@@ -112,7 +130,7 @@ export function EventSchema() {
       organizer: {
         '@type': 'Organization',
         name: "Nicole's Baking Studio",
-        url: 'https://nicolebaking.com',
+        url: 'https://chefnicole.pages.dev',
         telephone: '+60113384841 2',
       },
     },
@@ -206,19 +224,19 @@ export function BreadcrumbSchema() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://nicolebaking.com',
+        item: 'https://chefnicole.pages.dev',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Experiences',
-        item: 'https://nicolebaking.com#classes',
+        item: 'https://chefnicole.pages.dev#classes',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: 'Book Now',
-        item: 'https://nicolebaking.com#calendar',
+        item: 'https://chefnicole.pages.dev#calendar',
       },
     ],
   };
@@ -238,13 +256,13 @@ export function PersonSchema() {
     '@type': 'Person',
     name: 'Nicole Liew',
     jobTitle: 'Master Baker',
-    url: 'https://nicolebaking.com',
-    image: 'https://nicolebaking.com/reviewer.png',
+    url: 'https://chefnicole.pages.dev',
+    image: 'https://chefnicole.pages.dev/reviewer.png',
     description: 'Founder and master baker at Nicole\'s Baking Studio. Dedicated to preserving traditional baking methods while embracing modern aesthetics.',
     affiliation: {
       '@type': 'Organization',
       name: "Nicole's Baking Studio",
-      url: 'https://nicolebaking.com',
+      url: 'https://chefnicole.pages.dev',
     },
   };
 
