@@ -122,7 +122,7 @@ export default function Home() {
               className="order-2 md:order-1 grid grid-cols-2 gap-4"
             >
               <motion.div variants={fadeIn} className="space-y-4 pt-12">
-                <img alt="Nicole Liew teaching a student" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500 w-full object-cover" src="/story-teaching.webp"/>
+                <img alt="Baking ingredients and tools" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500 w-full object-cover" src="/story-ingredients.jpg"/>
                 <img alt="A group posing with their fresh bakes" className="rounded-custom shadow-lg hover:scale-[1.02] transition-transform duration-500 w-full object-cover" src="/story-group.webp"/>
               </motion.div>
               <motion.div variants={fadeIn} className="space-y-4">
@@ -285,6 +285,51 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {/* 1-on-1 / Private Classes Banner */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mt-16 bg-white p-8 md:p-12 rounded-custom border border-gray-100 shadow-sm flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group hover:border-primary/20 transition-colors duration-500"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+              
+              <div className="flex-1 relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-charcoal text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-md tracking-wider">
+                    Custom Experience
+                  </span>
+                </div>
+                <h3 className="text-3xl font-light mb-4">Looking for <span className="font-bold text-charcoal">1-on-1</span> Classes?</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed max-w-2xl">
+                  Get personalized, dedicated attention from Master Baker Nicole. Perfect for those looking to master a specific technique, build a customized recipe, or enjoy a private session tailored entirely to your pace and goals.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3 text-sm font-medium text-gray-700 md:mb-0 mb-8">
+                  <div className="flex items-center"><span className="text-green-500 mr-2 text-lg">✔</span> Fully customized recipes</div>
+                  <div className="flex items-center"><span className="text-green-500 mr-2 text-lg">✔</span> Flexible scheduling</div>
+                  <div className="flex items-center"><span className="text-green-500 mr-2 text-lg">✔</span> Dedicated instruction</div>
+                  <div className="flex items-center"><span className="text-green-500 mr-2 text-lg">✔</span> Intensive technique focus</div>
+                </div>
+              </div>
+              
+              <div className="w-full md:w-[280px] flex flex-col gap-6 relative z-10 flex-shrink-0">
+                <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-md hidden sm:block">
+                  <img src="/story-teaching.webp" alt="Nicole teaching 1-on-1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <a 
+                  href="https://wa.me/601133848412?text=Hi%20Nicole!%20I%20am%20interested%20in%20arranging%20a%201-on-1%20private%20baking%20class."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('generate_lead', 'whatsapp', 'Class - WhatsApp - 1 on 1')}
+                  className="bg-charcoal text-white px-6 py-4 rounded-xl font-medium hover:bg-black transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 hover:scale-105 duration-300 w-full"
+                >
+                  <MessageCircle className="w-5 h-5" /> 
+                  Enquire on WhatsApp
+                </a>
+              </div>
+            </motion.div>
           </div>
         </section>
 
