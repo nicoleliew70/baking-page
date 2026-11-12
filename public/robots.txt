@@ -24,4 +24,4 @@ User-agent: DotBot
 Disallow: /
 
 # Sitemap
-Sitemap: https://chefnicole.pages.dev/sitemap.xml
+Sitemap: https://kitchen.teachernicoleacademy.com/sitemap.xml

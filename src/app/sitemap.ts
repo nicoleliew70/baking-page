@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://chefnicole.pages.dev';
+  const baseUrl = 'https://kitchen.teachernicoleacademy.com';
 
   return [
     {

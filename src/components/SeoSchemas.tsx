@@ -18,7 +18,7 @@ export function EventSchema() {
       },
       offers: {
         '@type': 'Offer',
-        url: 'https://chefnicole.pages.dev/#calendar',
+        url: 'https://kitchen.teachernicoleacademy.com/#calendar',
         price: '250',
         priceCurrency: 'MYR',
         availability: 'https://schema.org/InStock',
@@ -39,7 +39,7 @@ export function EventSchema() {
       organizer: {
         '@type': 'Organization',
         name: "Nicole's Baking Studio",
-        url: 'https://chefnicole.pages.dev',
+        url: 'https://kitchen.teachernicoleacademy.com',
         telephone: '+60113384841 2',
       },
       aggregateRating: {
@@ -66,7 +66,7 @@ export function EventSchema() {
       },
       offers: {
         '@type': 'Offer',
-        url: 'https://chefnicole.pages.dev/#calendar',
+        url: 'https://kitchen.teachernicoleacademy.com/#calendar',
         price: '200',
         priceCurrency: 'MYR',
         availability: 'https://schema.org/InStock',
@@ -87,7 +87,7 @@ export function EventSchema() {
       organizer: {
         '@type': 'Organization',
         name: "Nicole's Baking Studio",
-        url: 'https://chefnicole.pages.dev',
+        url: 'https://kitchen.teachernicoleacademy.com',
         telephone: '+60113384841 2',
       },
     },
@@ -109,7 +109,7 @@ export function EventSchema() {
       },
       offers: {
         '@type': 'Offer',
-        url: 'https://chefnicole.pages.dev/#calendar',
+        url: 'https://kitchen.teachernicoleacademy.com/#calendar',
         price: '150',
         priceCurrency: 'MYR',
         availability: 'https://schema.org/InStock',
@@ -130,7 +130,7 @@ export function EventSchema() {
       organizer: {
         '@type': 'Organization',
         name: "Nicole's Baking Studio",
-        url: 'https://chefnicole.pages.dev',
+        url: 'https://kitchen.teachernicoleacademy.com',
         telephone: '+60113384841 2',
       },
     },
@@ -224,19 +224,19 @@ export function BreadcrumbSchema() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://chefnicole.pages.dev',
+        item: 'https://kitchen.teachernicoleacademy.com',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Experiences',
-        item: 'https://chefnicole.pages.dev#classes',
+        item: 'https://kitchen.teachernicoleacademy.com#classes',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: 'Book Now',
-        item: 'https://chefnicole.pages.dev#calendar',
+        item: 'https://kitchen.teachernicoleacademy.com#calendar',
       },
     ],
   };
@@ -256,13 +256,13 @@ export function PersonSchema() {
     '@type': 'Person',
     name: 'Nicole Liew',
     jobTitle: 'Master Baker',
-    url: 'https://chefnicole.pages.dev',
-    image: 'https://chefnicole.pages.dev/reviewer.png',
+    url: 'https://kitchen.teachernicoleacademy.com',
+    image: 'https://kitchen.teachernicoleacademy.com/reviewer.png',
     description: 'Founder and master baker at Nicole\'s Baking Studio. Dedicated to preserving traditional baking methods while embracing modern aesthetics.',
     affiliation: {
       '@type': 'Organization',
       name: "Nicole's Baking Studio",
-      url: 'https://chefnicole.pages.dev',
+      url: 'https://kitchen.teachernicoleacademy.com',
     },
   };
 
