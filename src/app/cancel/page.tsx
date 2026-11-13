@@ -90,6 +90,8 @@ export default function CancelPage() {
         <div className="max-w-7xl mx-auto px-6 text-center text-xs text-gray-400">
           <p className="font-bold uppercase tracking-[0.2em] mb-1">Nicole Baking Workshop</p>
           <p>📍 Sandakan, Sabah, Malaysia</p>
+          <p className="mt-4">Business Registration No.: 202603228331 (003883721-D)</p>
+          <p className="mt-2">© {new Date().getFullYear()} Teacher Nicole Academy. All rights reserved.</p>
         </div>
       </footer>
     </div>

@@ -356,7 +356,10 @@ export default function Home() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-gray-200 text-xs text-gray-400 flex flex-col md:flex-row justify-between items-center">
-          <p>© {new Date().getFullYear()} Nicole Baking. All rights reserved.</p>
+          <div className="space-y-2 text-center md:text-left">
+            <p>Business Registration No.: 202603228331 (003883721-D)</p>
+            <p>© {new Date().getFullYear()} Teacher Nicole Academy. All rights reserved.</p>
+          </div>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <span className="flex items-center text-gray-500">
               Class details, dates, and fees available on enquiry.
