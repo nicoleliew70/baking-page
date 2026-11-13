@@ -1,11 +1,11 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { Sparkles, ChefHat, MessageCircle } from 'lucide-react';
-import CalendarSection from '@/components/CalendarSection';
+import { BAKING_CLASSES, getClassEnquiryUrl } from '@/lib/classes';
 import { trackEvent } from '@/lib/gtag';
-import { EventSchema, FAQSchema, BreadcrumbSchema, PersonSchema } from '@/components/SeoSchemas';
+import { ClassSchema, FAQSchema, BreadcrumbSchema, PersonSchema } from '@/components/SeoSchemas';
 
 const fadeIn: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       {/* SEO Schemas */}
-      <EventSchema />
+      <ClassSchema />
       <FAQSchema />
       <BreadcrumbSchema />
       <PersonSchema />
@@ -35,11 +35,11 @@ export default function Home() {
           <div className="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
             <a className="hover:text-primary transition-colors" href="#classes">Experiences</a>
             <a className="hover:text-primary transition-colors" href="#story">Our Story</a>
-            <a className="hover:text-primary transition-colors" href="#calendar">Book Now</a>
+            <a className="hover:text-primary transition-colors" href="#calendar">Enquire</a>
           </div>
           <div>
-            <a className="bg-primary text-white px-6 py-2.5 rounded-custom text-sm font-semibold hover:opacity-90 transition-all" href="#calendar" onClick={() => trackEvent('click', 'navigation', 'Nav - Book an Experience')}>
-              Book an Experience
+            <a className="bg-primary text-white px-6 py-2.5 rounded-custom text-sm font-semibold hover:opacity-90 transition-all" href="#calendar" onClick={() => trackEvent('click', 'navigation', 'Nav - Enquire About Classes')}>
+              Enquire
             </a>
           </div>
         </div>
@@ -75,8 +75,8 @@ export default function Home() {
                 <a className="bg-charcoal text-white px-8 py-4 rounded-custom text-center font-medium hover:bg-black transition-all" href="#classes" onClick={() => trackEvent('click', 'hero', 'Hero - Explore Experiences')}>
                   Explore Experiences
                 </a>
-                <a className="border border-charcoal text-charcoal px-8 py-4 rounded-custom text-center font-medium hover:bg-charcoal hover:text-white transition-all" href="#calendar" onClick={() => trackEvent('click', 'hero', 'Hero - Check Schedule')}>
-                  Check Schedule
+                <a className="border border-charcoal text-charcoal px-8 py-4 rounded-custom text-center font-medium hover:bg-charcoal hover:text-white transition-all" href="#calendar" onClick={() => trackEvent('click', 'hero', 'Hero - Enquire About Classes')}>
+                  Enquire About Classes
                 </a>
               </motion.div>
             </motion.div>
@@ -167,8 +167,8 @@ export default function Home() {
                   <ChefHat className="w-5 h-5 mr-3 flex-shrink-0" /> Perfect for beginners — we guide you step by step!
                 </p>
               </motion.div>
-              <motion.a variants={fadeIn} href="#calendar" className="text-primary font-bold border-b-2 border-primary pb-1 hover:text-charcoal hover:border-charcoal transition-all" onClick={() => trackEvent('click', 'story', 'Story - Book Today Link')}>
-                Book your session today →
+              <motion.a variants={fadeIn} href="#calendar" className="text-primary font-bold border-b-2 border-primary pb-1 hover:text-charcoal hover:border-charcoal transition-all" onClick={() => trackEvent('click', 'story', 'Story - Enquire Link')}>
+                Enquire about a class →
               </motion.a>
             </motion.div>
 
@@ -186,103 +186,50 @@ export default function Home() {
               className="flex justify-between items-end mb-12"
             >
               <div>
-                <h2 className="text-4xl font-light mb-2">Upcoming <span className="font-bold">Experiences</span></h2>
-                <p className="text-gray-500">Perfect for Kids, Teens, and Adults (2-4 hours per experience).</p>
+                <h2 className="text-4xl font-light mb-2">Explore Our <span className="font-bold">Baking Classes</span></h2>
+                <p className="text-gray-500">Pastries, cookies, and cakes — discover what you’d love to bake.</p>
               </div>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { 
-                  title: "Adults Cheesecake Duo", 
-                  hours: "3 Hours", 
-                  level: "Adults (18+)", 
-                  description: "Learn to make **2 full cheesecakes from scratch** in a fun, hands-on session<br/><br/>✔ 3–4 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
-                  price: "RM 250", 
-                  status: "Open", 
-                  src: "/cheesecake-experience.webp" 
-                },
-                { 
-                  title: "Teens Brownie & Ice Cream", 
-                  hours: "3 Hours", 
-                  level: "Teens (13-17)", 
-                  description: "Create delicious brownies and make your own vanilla ice cream from scratch!<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
-                  price: "RM 200", 
-                  status: "Open", 
-                  src: "/brownie-experience.webp" 
-                },
-                { 
-                  title: "Kids Cupcake Experience", 
-                  hours: "3 Hours", 
-                  level: "Kids (9-12)", 
-                  description: "Perfect for young bakers wanting to learn, create, and have fun in the kitchen!<br/><br/>✔ 3 hour guided experience<br/>✔ Beginner-friendly (no experience needed)<br/>✔ All ingredients & tools provided<br/>✔ Take home everything you make<br/>✔ Small group (max 4 students)",
-                  price: "RM 150", 
-                  status: "Open", 
-                  src: "/cupcake-experience.webp" 
-                },
-              ].map((cls, idx) => (
-                <div key={idx} className="h-full">
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.6, delay: idx * 0.15 }}
-                    className="bg-white p-4 rounded-custom border border-gray-100 shadow-sm hover:shadow-xl transition-all h-full flex flex-col group"
-                  >
-                  <a href="#calendar" className="block img-hover-zoom rounded-custom mb-6 aspect-[4/3] bg-gray-100 overflow-hidden relative">
-                    <img alt={cls.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={cls.src}/>
-                  </a>
+              {BAKING_CLASSES.map((cls, idx) => (
+                <motion.article
+                  key={cls.title}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: idx * 0.15 }}
+                  className="bg-white p-4 rounded-custom border border-gray-100 shadow-sm hover:shadow-xl transition-all h-full flex flex-col group"
+                >
+                  <div className="rounded-custom mb-6 aspect-[4/3] bg-gray-100 overflow-hidden">
+                    <img alt={cls.imageAlt} width={1000} height={750} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={cls.image} />
+                  </div>
                   <div className="flex flex-col flex-grow">
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="bg-primary/10 text-primary text-[10px] font-bold uppercase px-2 py-1 rounded">
-                        {cls.level}
-                      </span>
-                      {cls.status === "Open" ? (
-                        <div className="flex items-center space-x-1">
-                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                          <span className="text-green-700 text-[10px] font-bold uppercase tracking-wider">Booking Open</span>
-                        </div>
-                      ) : (
-                        <span className="bg-red-100 text-red-700 text-[10px] font-bold uppercase px-2 py-1 rounded">Sold Out</span>
-                      )}
-                    </div>
-                    <a href="#calendar" className="block hover:text-primary transition-colors">
-                      <h3 className="text-2xl font-semibold mb-2 text-charcoal">{cls.title}</h3>
-                    </a>
-                    <p 
-                      className="text-sm text-gray-600 mb-4 leading-relaxed flex-grow" 
-                      dangerouslySetInnerHTML={{ __html: cls.description.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
-                    ></p>
-                    <div className="mt-auto pt-4 border-t border-gray-50 text-sm">
-                      <div className="flex justify-between items-center mb-6">
-                        <div className="flex flex-col">
-                          <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Duration</span>
-                          <span className="font-semibold text-charcoal">{cls.hours}</span>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Course Fee</span>
-                          <p className="text-xl font-bold text-primary">{cls.price}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <a href="#calendar" onClick={() => trackEvent('click', 'class_card', `Class - Book Now - ${cls.title}`)} className="block w-full text-center bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary/90 transition-all">
-                          Book Now
-                        </a>
-                        <a 
-                          href={`https://wa.me/601133848412?text=Hi%20I’m%20interested%20in%20your%20baking%20class`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => trackEvent('generate_lead', 'whatsapp', `Class - WhatsApp - ${cls.title}`)}
-                          className="flex justify-center items-center gap-2 w-full text-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-xs font-medium text-gray-600"
-                        >
-                          <MessageCircle className="w-4 h-4 mr-1.5" /> Ask on WhatsApp before booking
-                        </a>
-                      </div>
+                    <span className="self-start bg-primary/10 text-primary text-[10px] font-bold uppercase px-2 py-1 rounded mb-3">Hands-on learning</span>
+                    <h3 className="text-2xl font-semibold mb-3 text-charcoal">{cls.title}</h3>
+                    <p className="text-sm text-gray-600 mb-5 leading-relaxed">{cls.description}</p>
+                    <ul className="text-sm text-gray-600 space-y-2 mb-6">
+                      <li>✔ Beginner-friendly guidance</li>
+                      <li>✔ All ingredients &amp; tools provided</li>
+                      <li>✔ Take home what you bake</li>
+                    </ul>
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <p className="text-sm text-gray-500 mb-4">Ask Nicole about class details, dates, and fees.</p>
+                      <a
+                        href={getClassEnquiryUrl(cls.title)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => trackEvent('generate_lead', 'whatsapp', `Class - WhatsApp - ${cls.title}`)}
+                        className="flex justify-center items-center gap-2 w-full text-center bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary/90 transition-all"
+                      >
+                        <MessageCircle className="w-4 h-4" /> Enquire on WhatsApp
+                      </a>
+                      <p className="text-[10px] text-gray-400 mt-3 text-center">
+                        Photo by <a href={cls.photoUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">{cls.photographer} on Unsplash</a>
+                      </p>
                     </div>
                   </div>
-                  </motion.div>
-                </div>
+                </motion.article>
               ))}
             </div>
 
@@ -333,10 +280,23 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Functional Booking Calendar */}
-        <Suspense fallback={<div className="h-96 flex items-center justify-center bg-cream rounded-2xl animate-pulse">Loading Booking System...</div>}>
-          <CalendarSection />
-        </Suspense>
+        {/* Keep the calendar anchor working for existing links to the old booking section. */}
+        <section id="calendar" className="section-padding bg-white scroll-mt-20" aria-labelledby="enquiry-heading">
+          <div className="max-w-3xl mx-auto px-6 text-center">
+            <span className="text-primary font-semibold tracking-widest uppercase text-xs mb-4 block">Let’s bake together</span>
+            <h2 id="enquiry-heading" className="text-4xl font-light mb-5">Find your next <span className="font-bold">baking class</span></h2>
+            <p className="text-gray-600 leading-relaxed mb-8">Interested in pastries, cookies, or cakes? Chat with Nicole about what you’d like to learn. She’ll help you choose a class and share available dates and fees.</p>
+            <a
+              href={getClassEnquiryUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('generate_lead', 'whatsapp', 'Class enquiry section')}
+              className="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all"
+            >
+              <MessageCircle className="w-5 h-5" /> Enquire on WhatsApp
+            </a>
+          </div>
+        </section>
 
         {/* Testimonials */}
         <section className="section-padding bg-charcoal text-white text-center" aria-label="Student testimonials section">
@@ -399,7 +359,7 @@ export default function Home() {
           <p>© {new Date().getFullYear()} Nicole Baking. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <span className="flex items-center text-gray-500">
-              Bank details provided upon booking confirmation.
+              Class details, dates, and fees available on enquiry.
             </span>
           </div>
         </div>

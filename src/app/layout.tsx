@@ -81,7 +81,6 @@ export default function RootLayout({
     telephone: '+60113384841 2',
     email: 'nicoleliew70@gmail.com',
     image: 'https://kitchen.teachernicoleacademy.com/chef-nicole.webp',
-    priceRange: 'RM150-RM250',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Sandakan',

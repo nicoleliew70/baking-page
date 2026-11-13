@@ -1,152 +1,33 @@
-export function EventSchema() {
-  const events = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: 'Adults Cheesecake Duo',
-      description: 'Learn to make 2 full cheesecakes from scratch in a fun, hands-on session. Beginner-friendly with all ingredients and tools provided.',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD0IbMFQfHtgJdSBNo3npYDbx7QoQUVyT5fzMoa1_TBBsImZv5TECQ3blhb85tYANNe-CIfNovO_sc2lpFTawOALul7w3KCzRBP0MbeJmYKWaME38zk18ei4de_VpWXNJRlKE2SMvba43kMmVmYvSeN76Dg4Ii5wq9c3iKvCLbr7VqetdqTWMR9kcW2Wwa-ptBXpR96NthV7IV3AEiQFnlBxjdTjf6U_VjtcH9C1pEBzdwsbWQ-SXOx5Cc-kbjWjROrexKdbafArS0A',
-      startDate: '2026-04-01',
-      endDate: '2026-12-31',
-      eventDuration: 'PT3H',
-      performer: {
-        '@type': 'Person',
-        name: 'Nicole Liew',
-        jobTitle: 'Master Baker',
-      },
-      offers: {
-        '@type': 'Offer',
-        url: 'https://kitchen.teachernicoleacademy.com/#calendar',
-        price: '250',
-        priceCurrency: 'MYR',
-        availability: 'https://schema.org/InStock',
-        validFrom: '2026-04-01',
-      },
-      location: {
-        '@type': 'Place',
-        name: "Nicole's Baking Studio",
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Sandakan',
-          addressLocality: 'Sandakan',
-          addressRegion: 'Sabah',
-          postalCode: '90000',
-          addressCountry: 'MY',
+import { BAKING_CLASSES } from '@/lib/classes';
+
+export function ClassSchema() {
+  const classes = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: BAKING_CLASSES.map((cls, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Course',
+        name: cls.title,
+        description: cls.description,
+        image: `https://kitchen.teachernicoleacademy.com${cls.image}`,
+        url: 'https://kitchen.teachernicoleacademy.com/#classes',
+        provider: {
+          '@type': 'Organization',
+          name: "Nicole's Baking Studio",
+          url: 'https://kitchen.teachernicoleacademy.com',
         },
       },
-      organizer: {
-        '@type': 'Organization',
-        name: "Nicole's Baking Studio",
-        url: 'https://kitchen.teachernicoleacademy.com',
-        telephone: '+60113384841 2',
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        ratingCount: '45',
-      },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: 'Teens Brownie & Ice Cream',
-      description: 'Create delicious brownies and make your own vanilla ice cream from scratch. Perfect for teens aged 13-17.',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwjEi7RoPYBuRowqRK1sgndZFooPSJ2Pkq3cuA2GffKY4idCEloS7gWnZnKCra4TBrU9KgbmMwtyJjNT43EvPHFCcIWTFStQlIk4p5a-y8EEA5b_EXLwKwg72qE9q1Q8349BJ_8xAAhYaRF8hj1hvZ5nvQ3sBkNAaWjHFJqzRCPWhgC-pwF6DEJe39_i-sPb0JsruZIE30fK5DK3uBldMAWySqcbaP1porq3vPjaV4YO17SOmb7gm01DzZ8u6bo7hiH2k1pMIVI4_6',
-      startDate: '2026-04-01',
-      endDate: '2026-12-31',
-      eventDuration: 'PT3H',
-      performer: {
-        '@type': 'Person',
-        name: 'Nicole Liew',
-        jobTitle: 'Master Baker',
-      },
-      offers: {
-        '@type': 'Offer',
-        url: 'https://kitchen.teachernicoleacademy.com/#calendar',
-        price: '200',
-        priceCurrency: 'MYR',
-        availability: 'https://schema.org/InStock',
-        validFrom: '2026-04-01',
-      },
-      location: {
-        '@type': 'Place',
-        name: "Nicole's Baking Studio",
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Sandakan',
-          addressLocality: 'Sandakan',
-          addressRegion: 'Sabah',
-          postalCode: '90000',
-          addressCountry: 'MY',
-        },
-      },
-      organizer: {
-        '@type': 'Organization',
-        name: "Nicole's Baking Studio",
-        url: 'https://kitchen.teachernicoleacademy.com',
-        telephone: '+60113384841 2',
-      },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: 'Kids Cupcake Experience',
-      description: 'Perfect for young bakers wanting to learn, create, and have fun in the kitchen. Ages 9-12.',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCcamctGjQEdZXrzsPfc0j4YPGqXFPRN-yeSkWVF696BeMS_3zW7lWMZeZTGdhncabc0ENK8FIzeIv5pzlD9ttTWDqn8ff27Nu5DbDHAv_fMt6CGRpwoidB2OS5F7fuEHKL-nJVwNMqLdsytRW44wStDqxa3OY8f8qmChgy5ZZ7lne12H85tcpjL4yVEoYvk4FYhVqet5sS_D1kEenQpSmX-YEYowpKHjejhirt46eZz4PBpXhIA9erIC1UJfMRtPNaOaHMPqa5DVoL',
-      startDate: '2026-04-01',
-      endDate: '2026-12-31',
-      eventDuration: 'PT3H',
-      performer: {
-        '@type': 'Person',
-        name: 'Nicole Liew',
-        jobTitle: 'Master Baker',
-      },
-      offers: {
-        '@type': 'Offer',
-        url: 'https://kitchen.teachernicoleacademy.com/#calendar',
-        price: '150',
-        priceCurrency: 'MYR',
-        availability: 'https://schema.org/InStock',
-        validFrom: '2026-04-01',
-      },
-      location: {
-        '@type': 'Place',
-        name: "Nicole's Baking Studio",
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Sandakan',
-          addressLocality: 'Sandakan',
-          addressRegion: 'Sabah',
-          postalCode: '90000',
-          addressCountry: 'MY',
-        },
-      },
-      organizer: {
-        '@type': 'Organization',
-        name: "Nicole's Baking Studio",
-        url: 'https://kitchen.teachernicoleacademy.com',
-        telephone: '+60113384841 2',
-      },
-    },
-  ];
+    })),
+  };
 
   return (
-    <>
-      {events.map((event, idx) => (
-        <script
-          key={`event-${idx}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(event) }}
-          suppressHydrationWarning
-        />
-      ))}
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(classes) }}
+      suppressHydrationWarning
+    />
   );
 }
 
@@ -184,7 +65,7 @@ export function FAQSchema() {
         name: 'How long does a class last?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Most classes are 3 hours long. This gives you plenty of time to learn and practice without feeling rushed.',
+          text: 'Class duration depends on what you would like to learn. Contact Nicole on WhatsApp for class details and available dates.',
         },
       },
       {
@@ -192,7 +73,7 @@ export function FAQSchema() {
         name: 'What are your class prices?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Kids classes are RM150, Teen classes are RM200, and Adult classes are RM250. Prices include all materials and take-home items.',
+          text: 'Contact Nicole on WhatsApp at +60 11-3384 8412 for class details, available dates, and fees.',
         },
       },
       {
@@ -235,7 +116,7 @@ export function BreadcrumbSchema() {
       {
         '@type': 'ListItem',
         position: 3,
-        name: 'Book Now',
+        name: 'Class Enquiries',
         item: 'https://kitchen.teachernicoleacademy.com#calendar',
       },
     ],

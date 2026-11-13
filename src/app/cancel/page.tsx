@@ -5,7 +5,7 @@ export const runtime = 'edge';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { XCircle, CalendarDays, MessageSquare, ArrowLeft } from 'lucide-react';
+import { XCircle, ChefHat, MessageSquare, ArrowLeft } from 'lucide-react';
 import { WORKSHOP_CONFIG } from '@/lib/config';
 
 export default function CancelPage() {
@@ -50,7 +50,7 @@ export default function CancelPage() {
               No worries — <span className="font-semibold italic">come back anytime.</span>
             </h1>
             <p className="text-gray-500 leading-relaxed">
-              Your booking was not completed and you have not been charged. Your spot is still open — head back to the calendar whenever you're ready.
+              Your booking was not completed and you have not been charged. Contact Nicole on WhatsApp to discuss a class and available dates.
             </p>
           </div>
 
@@ -60,8 +60,8 @@ export default function CancelPage() {
               onClick={() => router.push('/#calendar')}
               className="flex items-center justify-center gap-3 w-full bg-charcoal text-white font-semibold py-4 rounded-custom hover:bg-black transition-all"
             >
-              <CalendarDays className="w-5 h-5" />
-              Return to Booking Calendar
+              <ChefHat className="w-5 h-5" />
+              Enquire About Classes
             </button>
 
             <a
