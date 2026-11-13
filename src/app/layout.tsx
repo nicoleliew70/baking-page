@@ -79,7 +79,7 @@ export default function RootLayout({
     description: 'Master the art of artisanal baking with expert-led hands-on workshops',
     url: 'https://kitchen.teachernicoleacademy.com',
     telephone: '+60113384841 2',
-    email: 'nicoleliew70@gmail.com',
+    email: 'chef@teachernicoleacademy.com',
     image: 'https://kitchen.teachernicoleacademy.com/chef-nicole.webp',
     address: {
       '@type': 'PostalAddress',
@@ -121,7 +121,7 @@ export default function RootLayout({
     contact: {
       '@type': 'ContactPoint',
       telephone: '+60113384841 2',
-      email: 'nicoleliew70@gmail.com',
+      email: 'chef@teachernicoleacademy.com',
       contactType: 'Customer Service',
     },
   };

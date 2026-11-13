@@ -350,7 +350,7 @@ export default function Home() {
           <div>
             <h4 className="font-bold uppercase text-xs tracking-widest mb-6">Connect</h4>
             <ul className="space-y-4 text-sm text-gray-500">
-              <li><a href="mailto:nicoleliew70@gmail.com" className="hover:text-primary transition-colors">nicoleliew70@gmail.com</a></li>
+              <li><a href="mailto:chef@teachernicoleacademy.com" className="hover:text-primary transition-colors">chef@teachernicoleacademy.com</a></li>
               <li><a href="https://wa.me/601133848412" className="hover:text-primary transition-colors">+60 11-3384 8412</a></li>
             </ul>
           </div>
